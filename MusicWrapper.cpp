@@ -4,7 +4,7 @@ std::string MusicWrapper::getMusicPath(std::string musicName) {
 	return this->musicFolder + musicName;
 }
 
-bool MusicWrapper::play() {
+bool MusicWrapper::play(std::string musicName) {
 	if (this->music.getStatus() == sf::Music::Paused) {
 		this->music.play();
 
@@ -15,7 +15,7 @@ bool MusicWrapper::play() {
 		this->music.stop();
 	}
 
-	if (!this->music.openFromFile(this->getMusicPath("test.mp3"))) {
+	if (!this->music.openFromFile(this->getMusicPath(musicName))) {
 		return false;
 	}
 
@@ -32,6 +32,12 @@ bool MusicWrapper::pause() {
 	}
 
 	return false;
+}
+
+bool MusicWrapper::stop() {
+	this->music.stop();
+
+	return true;
 }
 
 bool MusicWrapper::setPlayingOffset(int seconds) {

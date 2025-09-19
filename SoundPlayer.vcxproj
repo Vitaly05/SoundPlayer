@@ -124,6 +124,8 @@
   <ItemGroup>
     <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="MusicWrapper.cpp" />
+    <ClCompile Include="Playlist.cpp" />
+    <ClCompile Include="PlaylistNode.cpp" />
     <ClCompile Include="TimeHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +133,8 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="MusicWrapper.h" />
+    <ClInclude Include="Playlist.h" />
+    <ClInclude Include="PlaylistNode.h" />
     <ClInclude Include="TimeHelper.h" />
   </ItemGroup>
   <ItemGroup>

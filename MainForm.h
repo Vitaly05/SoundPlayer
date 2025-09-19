@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MusicWrapper.h"
+#include "Playlist.h"
 #include "TimeHelper.h"
 
 namespace SoundPlayer {
@@ -51,7 +52,9 @@ namespace SoundPlayer {
 	private: System::Windows::Forms::Timer^ musicTimer;
 
 
-	private: MusicWrapper* musicWrapper = new MusicWrapper();
+	private: 
+		MusicWrapper* musicWrapper = new MusicWrapper();
+		Playlist* playlist = new Playlist(this->musicWrapper);
 
 	private: bool isProgrammaticTrackChange = false;
 
@@ -158,6 +161,7 @@ namespace SoundPlayer {
 			this->prevButton->Size = System::Drawing::Size(83, 39);
 			this->prevButton->TabIndex = 2;
 			this->prevButton->UseVisualStyleBackColor = false;
+			this->prevButton->Click += gcnew System::EventHandler(this, &MainForm::prevButton_Click);
 			// 
 			// iconsImageList
 			// 
@@ -179,6 +183,7 @@ namespace SoundPlayer {
 			this->nextButton->Size = System::Drawing::Size(83, 39);
 			this->nextButton->TabIndex = 3;
 			this->nextButton->UseVisualStyleBackColor = false;
+			this->nextButton->Click += gcnew System::EventHandler(this, &MainForm::nextButton_Click);
 			// 
 			// pauseButton
 			// 
@@ -245,7 +250,7 @@ namespace SoundPlayer {
 			this->currentTime->Name = L"currentTime";
 			this->currentTime->Size = System::Drawing::Size(29, 33);
 			this->currentTime->TabIndex = 2;
-			this->currentTime->Text = L"0";
+			this->currentTime->Text = L"0:00";
 			this->currentTime->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// maxTime
@@ -256,7 +261,7 @@ namespace SoundPlayer {
 			this->maxTime->Name = L"maxTime";
 			this->maxTime->Size = System::Drawing::Size(31, 33);
 			this->maxTime->TabIndex = 3;
-			this->maxTime->Text = L"0";
+			this->maxTime->Text = L"0:00";
 			this->maxTime->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// musicTimer
@@ -286,19 +291,23 @@ namespace SoundPlayer {
 #pragma endregion
 	
 	private: System::Void playButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		bool res = this->musicWrapper->play();
+		bool res = this->playlist->play();
 
 		if (res) {
-			int duration = musicWrapper->getDuration().asSeconds();
-
-			this->musicProgressBar->Maximum = duration;
-			this->maxTime->Text = TimeHelper::formatSeconds(duration);
-			this->musicTimer->Start();
+			this->setMusicInfo();
 		}
 	}
 
+	private: void setMusicInfo() {
+		int duration = this->musicWrapper->getDuration().asSeconds();
+
+		this->musicProgressBar->Maximum = duration;
+		this->maxTime->Text = TimeHelper::formatSeconds(duration);
+		this->musicTimer->Start();
+	}
+
 	private: System::Void pauseButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		bool res = this->musicWrapper->pause();
+		bool res = this->playlist->pause();
 
 		if (res) {
 			this->musicTimer->Stop();
@@ -325,6 +334,22 @@ namespace SoundPlayer {
 
 		this->musicWrapper->setPlayingOffset(trackBar->Value);
 		this->currentTime->Text = TimeHelper::formatSeconds(trackBar->Value);
+	}
+
+	private: System::Void nextButton_Click(System::Object^ sender, System::EventArgs^ e) {
+		bool res = this->playlist->playNext();
+
+		if (res) {
+			this->setMusicInfo();
+		}
+	}
+
+	private: System::Void prevButton_Click(System::Object^ sender, System::EventArgs^ e) {
+		bool res = this->playlist->playPrev();
+
+		if (res) {
+			this->setMusicInfo();
+		}
 	}
 };
 }

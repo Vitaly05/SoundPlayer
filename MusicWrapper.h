@@ -13,8 +13,9 @@ private:
 	std::string getMusicPath(std::string musicName);
 
 public:
-	bool play();
+	bool play(std::string musicName);
 	bool pause();
+	bool stop();
 	bool setPlayingOffset(int seconds);
 	sf::Time getDuration();
 	sf::Time getPlayingOffset();
