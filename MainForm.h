@@ -55,6 +55,12 @@ namespace SoundPlayer {
 	private: 
 		MusicWrapper* musicWrapper = new MusicWrapper();
 		Playlist* playlist = new Playlist(this->musicWrapper);
+	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel4;
+	private: System::Windows::Forms::TrackBar^ volumeBar;
+
+	private: System::Windows::Forms::NumericUpDown^ volumeUpDown;
+
+
 
 	private: bool isProgrammaticTrackChange = false;
 
@@ -91,32 +97,41 @@ namespace SoundPlayer {
 			this->musicProgressBar = (gcnew System::Windows::Forms::TrackBar());
 			this->currentTime = (gcnew System::Windows::Forms::Label());
 			this->maxTime = (gcnew System::Windows::Forms::Label());
+			this->tableLayoutPanel4 = (gcnew System::Windows::Forms::TableLayoutPanel());
+			this->volumeBar = (gcnew System::Windows::Forms::TrackBar());
+			this->volumeUpDown = (gcnew System::Windows::Forms::NumericUpDown());
 			this->musicTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->tableLayoutPanel1->SuspendLayout();
 			this->tableLayoutPanel2->SuspendLayout();
 			this->tableLayoutPanel3->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->musicProgressBar))->BeginInit();
+			this->tableLayoutPanel4->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->volumeBar))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->volumeUpDown))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// menuStrip1
 			// 
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(453, 24);
+			this->menuStrip1->Size = System::Drawing::Size(527, 24);
 			this->menuStrip1->TabIndex = 0;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
 			// tableLayoutPanel1
 			// 
-			this->tableLayoutPanel1->ColumnCount = 3;
+			this->tableLayoutPanel1->ColumnCount = 4;
 			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 				10)));
+			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Absolute,
+				54)));
 			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 				80)));
 			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 				10)));
-			this->tableLayoutPanel1->Controls->Add(this->tableLayoutPanel2, 1, 2);
-			this->tableLayoutPanel1->Controls->Add(this->tableLayoutPanel3, 1, 1);
+			this->tableLayoutPanel1->Controls->Add(this->tableLayoutPanel2, 2, 2);
+			this->tableLayoutPanel1->Controls->Add(this->tableLayoutPanel3, 2, 1);
+			this->tableLayoutPanel1->Controls->Add(this->tableLayoutPanel4, 1, 0);
 			this->tableLayoutPanel1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->tableLayoutPanel1->Location = System::Drawing::Point(0, 24);
 			this->tableLayoutPanel1->Name = L"tableLayoutPanel1";
@@ -124,7 +139,7 @@ namespace SoundPlayer {
 			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 90.09174F)));
 			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 39)));
 			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 9.908257F)));
-			this->tableLayoutPanel1->Size = System::Drawing::Size(453, 545);
+			this->tableLayoutPanel1->Size = System::Drawing::Size(527, 545);
 			this->tableLayoutPanel1->TabIndex = 1;
 			// 
 			// tableLayoutPanel2
@@ -143,11 +158,11 @@ namespace SoundPlayer {
 			this->tableLayoutPanel2->Controls->Add(this->pauseButton, 2, 0);
 			this->tableLayoutPanel2->Controls->Add(this->playButton, 1, 0);
 			this->tableLayoutPanel2->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->tableLayoutPanel2->Location = System::Drawing::Point(48, 497);
+			this->tableLayoutPanel2->Location = System::Drawing::Point(104, 497);
 			this->tableLayoutPanel2->Name = L"tableLayoutPanel2";
 			this->tableLayoutPanel2->RowCount = 1;
 			this->tableLayoutPanel2->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 100)));
-			this->tableLayoutPanel2->Size = System::Drawing::Size(356, 45);
+			this->tableLayoutPanel2->Size = System::Drawing::Size(372, 45);
 			this->tableLayoutPanel2->TabIndex = 0;
 			// 
 			// prevButton
@@ -158,7 +173,7 @@ namespace SoundPlayer {
 			this->prevButton->ImageList = this->iconsImageList;
 			this->prevButton->Location = System::Drawing::Point(3, 3);
 			this->prevButton->Name = L"prevButton";
-			this->prevButton->Size = System::Drawing::Size(83, 39);
+			this->prevButton->Size = System::Drawing::Size(87, 39);
 			this->prevButton->TabIndex = 2;
 			this->prevButton->UseVisualStyleBackColor = false;
 			this->prevButton->Click += gcnew System::EventHandler(this, &MainForm::prevButton_Click);
@@ -178,9 +193,9 @@ namespace SoundPlayer {
 			this->nextButton->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->nextButton->ImageKey = L"next.png";
 			this->nextButton->ImageList = this->iconsImageList;
-			this->nextButton->Location = System::Drawing::Point(270, 3);
+			this->nextButton->Location = System::Drawing::Point(282, 3);
 			this->nextButton->Name = L"nextButton";
-			this->nextButton->Size = System::Drawing::Size(83, 39);
+			this->nextButton->Size = System::Drawing::Size(87, 39);
 			this->nextButton->TabIndex = 3;
 			this->nextButton->UseVisualStyleBackColor = false;
 			this->nextButton->Click += gcnew System::EventHandler(this, &MainForm::nextButton_Click);
@@ -191,9 +206,9 @@ namespace SoundPlayer {
 			this->pauseButton->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->pauseButton->ImageKey = L"pause.png";
 			this->pauseButton->ImageList = this->iconsImageList;
-			this->pauseButton->Location = System::Drawing::Point(181, 3);
+			this->pauseButton->Location = System::Drawing::Point(189, 3);
 			this->pauseButton->Name = L"pauseButton";
-			this->pauseButton->Size = System::Drawing::Size(83, 39);
+			this->pauseButton->Size = System::Drawing::Size(87, 39);
 			this->pauseButton->TabIndex = 1;
 			this->pauseButton->UseVisualStyleBackColor = false;
 			this->pauseButton->Click += gcnew System::EventHandler(this, &MainForm::pauseButton_Click);
@@ -204,9 +219,9 @@ namespace SoundPlayer {
 			this->playButton->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->playButton->ImageKey = L"play.png";
 			this->playButton->ImageList = this->iconsImageList;
-			this->playButton->Location = System::Drawing::Point(92, 3);
+			this->playButton->Location = System::Drawing::Point(96, 3);
 			this->playButton->Name = L"playButton";
-			this->playButton->Size = System::Drawing::Size(83, 39);
+			this->playButton->Size = System::Drawing::Size(87, 39);
 			this->playButton->TabIndex = 0;
 			this->playButton->UseVisualStyleBackColor = false;
 			this->playButton->Click += gcnew System::EventHandler(this, &MainForm::playButton_Click);
@@ -224,21 +239,21 @@ namespace SoundPlayer {
 			this->tableLayoutPanel3->Controls->Add(this->currentTime, 0, 0);
 			this->tableLayoutPanel3->Controls->Add(this->maxTime, 2, 0);
 			this->tableLayoutPanel3->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->tableLayoutPanel3->Location = System::Drawing::Point(48, 458);
+			this->tableLayoutPanel3->Location = System::Drawing::Point(104, 458);
 			this->tableLayoutPanel3->Name = L"tableLayoutPanel3";
 			this->tableLayoutPanel3->RowCount = 1;
 			this->tableLayoutPanel3->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 100)));
-			this->tableLayoutPanel3->Size = System::Drawing::Size(356, 33);
+			this->tableLayoutPanel3->Size = System::Drawing::Size(372, 33);
 			this->tableLayoutPanel3->TabIndex = 2;
 			// 
 			// musicProgressBar
 			// 
 			this->musicProgressBar->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->musicProgressBar->LargeChange = 10;
-			this->musicProgressBar->Location = System::Drawing::Point(38, 3);
+			this->musicProgressBar->Location = System::Drawing::Point(40, 3);
 			this->musicProgressBar->Maximum = 180;
 			this->musicProgressBar->Name = L"musicProgressBar";
-			this->musicProgressBar->Size = System::Drawing::Size(278, 27);
+			this->musicProgressBar->Size = System::Drawing::Size(291, 27);
 			this->musicProgressBar->TabIndex = 1;
 			this->musicProgressBar->ValueChanged += gcnew System::EventHandler(this, &MainForm::musicProgressBar_ValueChanged);
 			// 
@@ -248,7 +263,7 @@ namespace SoundPlayer {
 			this->currentTime->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->currentTime->Location = System::Drawing::Point(3, 0);
 			this->currentTime->Name = L"currentTime";
-			this->currentTime->Size = System::Drawing::Size(29, 33);
+			this->currentTime->Size = System::Drawing::Size(31, 33);
 			this->currentTime->TabIndex = 2;
 			this->currentTime->Text = L"0:00";
 			this->currentTime->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -257,12 +272,53 @@ namespace SoundPlayer {
 			// 
 			this->maxTime->AutoSize = true;
 			this->maxTime->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->maxTime->Location = System::Drawing::Point(322, 0);
+			this->maxTime->Location = System::Drawing::Point(337, 0);
 			this->maxTime->Name = L"maxTime";
-			this->maxTime->Size = System::Drawing::Size(31, 33);
+			this->maxTime->Size = System::Drawing::Size(32, 33);
 			this->maxTime->TabIndex = 3;
 			this->maxTime->Text = L"0:00";
 			this->maxTime->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// tableLayoutPanel4
+			// 
+			this->tableLayoutPanel4->ColumnCount = 1;
+			this->tableLayoutPanel4->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+				50)));
+			this->tableLayoutPanel4->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+				50)));
+			this->tableLayoutPanel4->Controls->Add(this->volumeBar, 0, 0);
+			this->tableLayoutPanel4->Controls->Add(this->volumeUpDown, 0, 1);
+			this->tableLayoutPanel4->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->tableLayoutPanel4->Location = System::Drawing::Point(50, 3);
+			this->tableLayoutPanel4->Name = L"tableLayoutPanel4";
+			this->tableLayoutPanel4->RowCount = 2;
+			this->tableLayoutPanel4->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 86.41425F)));
+			this->tableLayoutPanel4->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 13.58575F)));
+			this->tableLayoutPanel4->Size = System::Drawing::Size(48, 449);
+			this->tableLayoutPanel4->TabIndex = 3;
+			// 
+			// volumeBar
+			// 
+			this->volumeBar->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->volumeBar->Location = System::Drawing::Point(3, 3);
+			this->volumeBar->Maximum = 100;
+			this->volumeBar->Name = L"volumeBar";
+			this->volumeBar->Orientation = System::Windows::Forms::Orientation::Vertical;
+			this->volumeBar->Size = System::Drawing::Size(42, 382);
+			this->volumeBar->TabIndex = 0;
+			this->volumeBar->Value = 100;
+			this->volumeBar->ValueChanged += gcnew System::EventHandler(this, &MainForm::volumeBar_ValueChanged);
+			// 
+			// volumeUpDown
+			// 
+			this->volumeUpDown->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->volumeUpDown->Location = System::Drawing::Point(3, 391);
+			this->volumeUpDown->Name = L"volumeUpDown";
+			this->volumeUpDown->Size = System::Drawing::Size(42, 20);
+			this->volumeUpDown->TabIndex = 4;
+			this->volumeUpDown->UpDownAlign = System::Windows::Forms::LeftRightAlignment::Left;
+			this->volumeUpDown->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 100, 0, 0, 0 });
+			this->volumeUpDown->ValueChanged += gcnew System::EventHandler(this, &MainForm::volumeUpDown_ValueChanged);
 			// 
 			// musicTimer
 			// 
@@ -273,7 +329,7 @@ namespace SoundPlayer {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(453, 569);
+			this->ClientSize = System::Drawing::Size(527, 569);
 			this->Controls->Add(this->tableLayoutPanel1);
 			this->Controls->Add(this->menuStrip1);
 			this->MainMenuStrip = this->menuStrip1;
@@ -284,6 +340,10 @@ namespace SoundPlayer {
 			this->tableLayoutPanel3->ResumeLayout(false);
 			this->tableLayoutPanel3->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->musicProgressBar))->EndInit();
+			this->tableLayoutPanel4->ResumeLayout(false);
+			this->tableLayoutPanel4->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->volumeBar))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->volumeUpDown))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -350,6 +410,25 @@ namespace SoundPlayer {
 		if (res) {
 			this->setMusicInfo();
 		}
+	}
+
+	private: System::Void volumeBar_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		TrackBar^ trackBar = safe_cast<TrackBar^>(sender);
+
+		int newVolume = trackBar->Value;
+
+		this->musicWrapper->setVolume(newVolume);
+		this->volumeUpDown->Value = newVolume;
+	}
+
+	private: System::Void volumeUpDown_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		NumericUpDown^ numericUpDown = safe_cast<NumericUpDown^>(sender);
+
+		int newVolume = Decimal::ToInt32(numericUpDown->Value);
+
+		this->musicWrapper->setVolume(newVolume);
+		this->volumeBar->Value = newVolume;
+		this->volumeUpDown->Value = newVolume;
 	}
 };
 }

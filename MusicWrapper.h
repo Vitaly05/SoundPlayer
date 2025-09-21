@@ -19,5 +19,6 @@ public:
 	bool setPlayingOffset(int seconds);
 	sf::Time getDuration();
 	sf::Time getPlayingOffset();
+	void setVolume(float volume);
 };
 
