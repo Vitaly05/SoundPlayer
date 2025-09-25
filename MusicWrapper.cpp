@@ -61,3 +61,7 @@ sf::Time MusicWrapper::getPlayingOffset() {
 void MusicWrapper::setVolume(float volume) {
 	this->music.setVolume(volume);
 }
+
+void MusicWrapper::setPitch(float pitch) {
+	this->music.setPitch(pitch);
+}
