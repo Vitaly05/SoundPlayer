@@ -54,7 +54,7 @@ namespace SoundPlayer {
 
 	private: 
 		MusicWrapper* musicWrapper = new MusicWrapper();
-		Playlist* playlist = new Playlist(this->musicWrapper);
+		Playlist* playlist;
 	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel4;
 	private: System::Windows::Forms::TrackBar^ volumeBar;
 

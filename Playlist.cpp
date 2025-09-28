@@ -1,18 +1,36 @@
 #include "Playlist.h"
 
-Playlist::Playlist(MusicWrapper* wrapper) {
+Playlist::Playlist(MusicWrapper* wrapper, std::vector<fs::path> musicPathes) {
 	this->musicWrapper = wrapper;
 
-	PlaylistNode* first = new PlaylistNode("test.mp3", this->musicWrapper);
-	PlaylistNode* second = new PlaylistNode("test2.mp3", this->musicWrapper);
+	PlaylistNode* firstNode = nullptr;
+	PlaylistNode* prevNode = nullptr;
 
-	first->next = second;
-	second->prev = first;
+	for (auto path : musicPathes) {
+		auto node = new PlaylistNode(path.string(), path.filename().string(), this->musicWrapper);
 
-	this->musicList.push_back(first);
-	this->musicList.push_back(second);
+		if (!firstNode) {
+			node->next = node;
+			node->prev = node;
 
-	this->currentMusic = this->musicList.front();
+			firstNode = node;
+		}
+
+		if (!prevNode) {
+			prevNode = node;
+		}
+		else {
+			node->prev = prevNode;
+			node->next = firstNode;
+
+			prevNode->next = node;
+			firstNode->prev = node;
+		}
+
+		this->musicList.push_back(node);
+	}
+
+	this->currentMusic = firstNode;
 }
 
 bool Playlist::play() {

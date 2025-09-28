@@ -2,9 +2,12 @@
 
 #include <string>
 #include <vector>
+#include <filesystem>
 
 #include "MusicWrapper.h"
 #include "PlaylistNode.h"
+
+namespace fs = std::filesystem;
 
 class Playlist {
 private:
@@ -18,7 +21,7 @@ private:
 	void playAnotherMusic(PlaylistNode* music);
 
 public:
-	Playlist(MusicWrapper* wrapper);
+	Playlist(MusicWrapper* wrapper, std::vector<fs::path> musicPathes);
 	bool play();
 	bool pause();
 	bool playNext();

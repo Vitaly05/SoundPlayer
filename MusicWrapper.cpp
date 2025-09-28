@@ -1,10 +1,6 @@
 #include "MusicWrapper.h"
 
-std::string MusicWrapper::getMusicPath(std::string musicName) {
-	return this->musicFolder + musicName;
-}
-
-bool MusicWrapper::play(std::string musicName) {
+bool MusicWrapper::play(std::string musicPath) {
 	if (this->music.getStatus() == sf::Music::Paused) {
 		this->music.play();
 
@@ -15,7 +11,7 @@ bool MusicWrapper::play(std::string musicName) {
 		this->music.stop();
 	}
 
-	if (!this->music.openFromFile(this->getMusicPath(musicName))) {
+	if (!this->music.openFromFile(musicPath)) {
 		return false;
 	}
 

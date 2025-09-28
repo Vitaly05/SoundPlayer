@@ -3,9 +3,17 @@
 
 #include <Windows.h>
 
+#include "DirectoryHelper.h"
+
 using namespace SoundPlayer;
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+	// Console for debug
+	AllocConsole();
+	FILE* fp;
+	freopen_s(&fp, "CONOUT$", "w", stdout);
+	freopen_s(&fp, "CONOUT$", "w", stderr);
+
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
 	Application::Run(gcnew MainForm);
@@ -122,5 +130,7 @@ System::Void MainForm::pitchUpDown_ValueChanged(System::Object^ sender, System::
 }
 
 System::Void MainForm::MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
-
+	auto musicPatches = DirectoryHelper::getMusicPathesArray();
+	
+	this->playlist = new Playlist(this->musicWrapper, musicPatches);
 }

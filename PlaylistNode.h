@@ -7,11 +7,12 @@
 class PlaylistNode {
 public:
 	MusicWrapper* musicWrapper = nullptr;
+	std::string path;
 	std::string name;
 	PlaylistNode* next = nullptr;
 	PlaylistNode* prev = nullptr;
 
-	PlaylistNode(std::string name, MusicWrapper* wrapper);
+	PlaylistNode(std::string path, std::string name, MusicWrapper* wrapper);
 	bool play();
 };
 

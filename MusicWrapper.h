@@ -8,12 +8,9 @@
 class MusicWrapper {
 private:
 	sf::Music music;
-	std::string musicFolder = "music/";
-
-	std::string getMusicPath(std::string musicName);
 
 public:
-	bool play(std::string musicName);
+	bool play(std::string musicPath);
 	bool pause();
 	bool stop();
 	bool setPlayingOffset(int seconds);
