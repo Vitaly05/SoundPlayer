@@ -403,6 +403,7 @@ namespace SoundPlayer {
 			this->MainMenuStrip = this->menuStrip1;
 			this->Name = L"MainForm";
 			this->Text = L"SoundPlayer";
+			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
 			this->tableLayoutPanel1->ResumeLayout(false);
 			this->tableLayoutPanel2->ResumeLayout(false);
 			this->tableLayoutPanel3->ResumeLayout(false);
@@ -422,112 +423,32 @@ namespace SoundPlayer {
 		}
 #pragma endregion
 
-	private: void setMusicInfo() {
-		int duration = this->musicWrapper->getDuration().asSeconds();
+	private: void setMusicInfo();
 
-		this->musicProgressBar->Maximum = duration;
-		this->maxTime->Text = TimeHelper::formatSeconds(duration);
-		this->musicTimer->Start();
-	}
+	private: int getTrackBarValue(System::Object^ sender);
 
-	private: int getTrackBarValue(System::Object^ sender) {
-		TrackBar^ trackBar = safe_cast<TrackBar^>(sender);
-
-		return trackBar->Value;
-	}
-
-	private: int getNumericUpDownValue(System::Object^ sender) {
-		NumericUpDown^ numericUpDown = safe_cast<NumericUpDown^>(sender);
-
-		return Decimal::ToInt32(numericUpDown->Value);
-	}
+	private: int getNumericUpDownValue(System::Object^ sender);
 	
-	private: System::Void playButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		bool res = this->playlist->play();
+	private: System::Void playButton_Click(System::Object^ sender, System::EventArgs^ e);
 
-		if (res) {
-			this->setMusicInfo();
-		}
-	}
+	private: System::Void pauseButton_Click(System::Object^ sender, System::EventArgs^ e);
 
-	private: System::Void pauseButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		bool res = this->playlist->pause();
+	private: System::Void musicTimer_Tick(System::Object^ sender, System::EventArgs^ e);
 
-		if (res) {
-			this->musicTimer->Stop();
-		}
-	}
+	private: System::Void musicProgressBar_ValueChanged(System::Object^ sender, System::EventArgs^ e);
 
-	private: System::Void musicTimer_Tick(System::Object^ sender, System::EventArgs^ e) {
-		int offset = this->musicWrapper->getPlayingOffset().asSeconds();
+	private: System::Void nextButton_Click(System::Object^ sender, System::EventArgs^ e);
 
-		this->currentTime->Text = TimeHelper::formatSeconds(offset);
+	private: System::Void prevButton_Click(System::Object^ sender, System::EventArgs^ e);
 
-		this->isProgrammaticTrackChange = true;
-		this->musicProgressBar->Value = offset;
-	}
+	private: System::Void volumeBar_ValueChanged(System::Object^ sender, System::EventArgs^ e);
 
-	private: System::Void musicProgressBar_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
-		if (this->isProgrammaticTrackChange) {
-			this->isProgrammaticTrackChange = false;
-			
-			return;
-		}
+	private: System::Void volumeUpDown_ValueChanged(System::Object^ sender, System::EventArgs^ e);
 
-		TrackBar^ trackBar = safe_cast<TrackBar^>(sender);
+	private: System::Void pitchBar_ValueChanged(System::Object^ sender, System::EventArgs^ e);
 
-		this->musicWrapper->setPlayingOffset(trackBar->Value);
-		this->currentTime->Text = TimeHelper::formatSeconds(trackBar->Value);
-	}
+	private: System::Void pitchUpDown_ValueChanged(System::Object^ sender, System::EventArgs^ e);
 
-	private: System::Void nextButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		bool res = this->playlist->playNext();
-
-		if (res) {
-			this->setMusicInfo();
-		}
-	}
-
-	private: System::Void prevButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		bool res = this->playlist->playPrev();
-
-		if (res) {
-			this->setMusicInfo();
-		}
-	}
-
-	private: System::Void volumeBar_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
-		int newVolume = this->getTrackBarValue(sender);
-
-		this->musicWrapper->setVolume(newVolume);
-		this->volumeUpDown->Value = newVolume;
-	}
-
-	private: System::Void volumeUpDown_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
-		int newVolume = this->getNumericUpDownValue(sender);
-
-		this->musicWrapper->setVolume(newVolume);
-		this->volumeBar->Value = newVolume;
-		this->volumeUpDown->Value = newVolume;
-	}
-
-	private: System::Void pitchBar_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
-		int newPitch = this->getTrackBarValue(sender);
-
-		float floatPitch = (float)newPitch / 100;
-		this->musicWrapper->setPitch(floatPitch);
-
-		this->pitchUpDown->Value = newPitch;
-	}
-
-	private: System::Void pitchUpDown_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
-		int newPitch = this->getNumericUpDownValue(sender);
-
-		float floatPitch = (float)newPitch / 100;
-		this->musicWrapper->setPitch(floatPitch);
-
-		this->pitchBar->Value = newPitch;
-		this->pitchUpDown->Value = newPitch;
-	}
+	private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e);
 };
 }
