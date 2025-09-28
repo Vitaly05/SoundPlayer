@@ -133,4 +133,48 @@ System::Void MainForm::MainForm_Load(System::Object^ sender, System::EventArgs^ 
 	auto musicPatches = DirectoryHelper::getMusicPathesArray();
 	
 	this->playlist = new Playlist(this->musicWrapper, musicPatches);
+
+	PlaylistNode* music = this->playlist->firstMusic;
+
+	do {
+		addMusicButton(music->name, music->path, music);
+
+		music = music->next;
+	} while (music != this->playlist->firstMusic);
+}
+
+System::Windows::Forms::Button^ MainForm::createMusicButton(std::string text, std::string path, PlaylistNode* node) {
+	System::Windows::Forms::Button^ musicButton = (gcnew System::Windows::Forms::Button());
+
+	musicButton->Cursor = System::Windows::Forms::Cursors::Hand;
+	musicButton->Dock = System::Windows::Forms::DockStyle::Top;
+	musicButton->Location = System::Drawing::Point(3, 3);
+	musicButton->Name = L"musicButton-" + msclr::interop::marshal_as<System::String^>(text);
+	musicButton->Size = System::Drawing::Size(263, 23);
+	musicButton->TabIndex = 0;
+	musicButton->Text = StringHelper::toSystemString(text);
+	musicButton->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+	musicButton->UseVisualStyleBackColor = true;
+	musicButton->Click += gcnew System::EventHandler(this, &MainForm::musicButton_Click);
+
+	musicButton->Tag = IntPtr(node);
+
+	return musicButton;
+}
+
+System::Void MainForm::addMusicButton(std::string text, std::string path, PlaylistNode* node) {
+	this->allMusicPage->Controls->Add(this->createMusicButton(text, path, node));
+}
+
+System::Void MainForm::musicButton_Click(System::Object^ sender, System::EventArgs^ e) {
+	Button^ button = safe_cast<Button^>(sender);
+
+	IntPtr p = safe_cast<IntPtr>(button->Tag);
+	PlaylistNode* node = static_cast<PlaylistNode*>(p.ToPointer());
+	
+	bool res = this->playlist->play(node);
+
+	if (res) {
+		this->setMusicInfo();
+	}
 }

@@ -26,14 +26,19 @@ Playlist::Playlist(MusicWrapper* wrapper, std::vector<fs::path> musicPathes) {
 			prevNode->next = node;
 			firstNode->prev = node;
 		}
-
-		this->musicList.push_back(node);
 	}
 
 	this->currentMusic = firstNode;
+	this->firstMusic = firstNode;
 }
 
 bool Playlist::play() {
+	return this->currentMusic->play();
+}
+
+bool Playlist::play(PlaylistNode* music) {
+	this->currentMusic = music;
+
 	return this->currentMusic->play();
 }
 

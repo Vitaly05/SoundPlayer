@@ -12,10 +12,10 @@ namespace fs = std::filesystem;
 class Playlist {
 private:
 	MusicWrapper* musicWrapper = nullptr;
-	std::vector<PlaylistNode*> musicList;
 
 public:
 	PlaylistNode* currentMusic;
+	PlaylistNode* firstMusic;
 
 private:
 	void playAnotherMusic(PlaylistNode* music);
@@ -23,6 +23,7 @@ private:
 public:
 	Playlist(MusicWrapper* wrapper, std::vector<fs::path> musicPathes);
 	bool play();
+	bool play(PlaylistNode* music);
 	bool pause();
 	bool playNext();
 	bool playPrev();

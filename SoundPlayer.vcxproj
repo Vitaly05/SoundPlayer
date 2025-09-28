@@ -127,6 +127,7 @@
     <ClCompile Include="MusicWrapper.cpp" />
     <ClCompile Include="Playlist.cpp" />
     <ClCompile Include="PlaylistNode.cpp" />
+    <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="TimeHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -137,11 +138,13 @@
     <ClInclude Include="MusicWrapper.h" />
     <ClInclude Include="Playlist.h" />
     <ClInclude Include="PlaylistNode.h" />
+    <ClInclude Include="StringHelper.h" />
     <ClInclude Include="TimeHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.h</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
