@@ -23,10 +23,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 void MainForm::setMusicInfo() {
 	int duration = this->musicWrapper->getDuration().asSeconds();
+	auto currentMusic = this->playlist->currentMusic;
 
 	this->musicProgressBar->Maximum = duration;
 	this->maxTime->Text = TimeHelper::formatSeconds(duration);
 	this->musicTimer->Start();
+
+	this->musicName->Text = StringHelper::toSystemString(currentMusic->name);
 }
 
 int MainForm::getTrackBarValue(System::Object^ sender) {

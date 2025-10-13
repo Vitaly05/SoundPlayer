@@ -75,6 +75,11 @@ namespace SoundPlayer {
 
 	private: System::Windows::Forms::Button^ musicButtonTemplate;
 	private: System::Windows::Forms::ToolTip^ toolTip;
+	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel6;
+	private: System::Windows::Forms::PictureBox^ musicPictureBox;
+	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel7;
+	private: System::Windows::Forms::Label^ musicName;
+
 
 
 	private: bool isProgrammaticTrackChange = false;
@@ -121,8 +126,12 @@ namespace SoundPlayer {
 			this->allMusicPage = (gcnew System::Windows::Forms::TabPage());
 			this->musicButtonTemplate = (gcnew System::Windows::Forms::Button());
 			this->playlistsPage = (gcnew System::Windows::Forms::TabPage());
+			this->tableLayoutPanel6 = (gcnew System::Windows::Forms::TableLayoutPanel());
+			this->musicPictureBox = (gcnew System::Windows::Forms::PictureBox());
+			this->tableLayoutPanel7 = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->musicTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->toolTip = (gcnew System::Windows::Forms::ToolTip(this->components));
+			this->musicName = (gcnew System::Windows::Forms::Label());
 			this->tableLayoutPanel1->SuspendLayout();
 			this->tableLayoutPanel2->SuspendLayout();
 			this->tableLayoutPanel3->SuspendLayout();
@@ -135,6 +144,9 @@ namespace SoundPlayer {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pitchUpDown))->BeginInit();
 			this->musicTabPanel->SuspendLayout();
 			this->allMusicPage->SuspendLayout();
+			this->tableLayoutPanel6->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->musicPictureBox))->BeginInit();
+			this->tableLayoutPanel7->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// menuStrip1
@@ -165,6 +177,7 @@ namespace SoundPlayer {
 			this->tableLayoutPanel1->Controls->Add(this->tableLayoutPanel4, 1, 0);
 			this->tableLayoutPanel1->Controls->Add(this->tableLayoutPanel5, 3, 0);
 			this->tableLayoutPanel1->Controls->Add(this->musicTabPanel, 4, 0);
+			this->tableLayoutPanel1->Controls->Add(this->tableLayoutPanel6, 2, 0);
 			this->tableLayoutPanel1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->tableLayoutPanel1->Location = System::Drawing::Point(0, 24);
 			this->tableLayoutPanel1->Name = L"tableLayoutPanel1";
@@ -462,10 +475,68 @@ namespace SoundPlayer {
 			this->playlistsPage->Text = L"Плейлисты";
 			this->playlistsPage->UseVisualStyleBackColor = true;
 			// 
+			// tableLayoutPanel6
+			// 
+			this->tableLayoutPanel6->ColumnCount = 1;
+			this->tableLayoutPanel6->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+				100)));
+			this->tableLayoutPanel6->Controls->Add(this->musicPictureBox, 0, 0);
+			this->tableLayoutPanel6->Controls->Add(this->tableLayoutPanel7, 0, 1);
+			this->tableLayoutPanel6->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->tableLayoutPanel6->Location = System::Drawing::Point(121, 3);
+			this->tableLayoutPanel6->Name = L"tableLayoutPanel6";
+			this->tableLayoutPanel6->RowCount = 2;
+			this->tableLayoutPanel6->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 80)));
+			this->tableLayoutPanel6->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 20)));
+			this->tableLayoutPanel6->Size = System::Drawing::Size(506, 573);
+			this->tableLayoutPanel6->TabIndex = 8;
+			// 
+			// musicPictureBox
+			// 
+			this->musicPictureBox->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->musicPictureBox->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"musicPictureBox.Image")));
+			this->musicPictureBox->Location = System::Drawing::Point(3, 3);
+			this->musicPictureBox->Name = L"musicPictureBox";
+			this->musicPictureBox->Size = System::Drawing::Size(500, 452);
+			this->musicPictureBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->musicPictureBox->TabIndex = 0;
+			this->musicPictureBox->TabStop = false;
+			// 
+			// tableLayoutPanel7
+			// 
+			this->tableLayoutPanel7->ColumnCount = 3;
+			this->tableLayoutPanel7->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+				10)));
+			this->tableLayoutPanel7->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+				80)));
+			this->tableLayoutPanel7->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+				10)));
+			this->tableLayoutPanel7->Controls->Add(this->musicName, 1, 0);
+			this->tableLayoutPanel7->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->tableLayoutPanel7->Location = System::Drawing::Point(3, 461);
+			this->tableLayoutPanel7->Name = L"tableLayoutPanel7";
+			this->tableLayoutPanel7->RowCount = 1;
+			this->tableLayoutPanel7->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 100)));
+			this->tableLayoutPanel7->Size = System::Drawing::Size(500, 109);
+			this->tableLayoutPanel7->TabIndex = 1;
+			// 
 			// musicTimer
 			// 
 			this->musicTimer->Interval = 1000;
 			this->musicTimer->Tick += gcnew System::EventHandler(this, &MainForm::musicTimer_Tick);
+			// 
+			// musicName
+			// 
+			this->musicName->AutoSize = true;
+			this->musicName->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->musicName->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->musicName->Location = System::Drawing::Point(53, 0);
+			this->musicName->Name = L"musicName";
+			this->musicName->Size = System::Drawing::Size(394, 109);
+			this->musicName->TabIndex = 0;
+			this->musicName->Text = L"Select music";
+			this->musicName->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// MainForm
 			// 
@@ -493,6 +564,10 @@ namespace SoundPlayer {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pitchUpDown))->EndInit();
 			this->musicTabPanel->ResumeLayout(false);
 			this->allMusicPage->ResumeLayout(false);
+			this->tableLayoutPanel6->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->musicPictureBox))->EndInit();
+			this->tableLayoutPanel7->ResumeLayout(false);
+			this->tableLayoutPanel7->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 

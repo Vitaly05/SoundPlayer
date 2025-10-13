@@ -3,6 +3,7 @@
 #include <string>
 
 #include "MusicWrapper.h"
+#include "taglib-2.1/taglib/tag.h"
 
 class PlaylistNode {
 public:
