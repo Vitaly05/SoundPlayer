@@ -74,6 +74,8 @@ namespace SoundPlayer {
 	private: System::Windows::Forms::Label^ pitchLabel;
 
 	private: System::Windows::Forms::Button^ musicButtonTemplate;
+	private: System::Windows::Forms::ToolTip^ toolTip;
+
 
 	private: bool isProgrammaticTrackChange = false;
 
@@ -120,6 +122,7 @@ namespace SoundPlayer {
 			this->musicButtonTemplate = (gcnew System::Windows::Forms::Button());
 			this->playlistsPage = (gcnew System::Windows::Forms::TabPage());
 			this->musicTimer = (gcnew System::Windows::Forms::Timer(this->components));
+			this->toolTip = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->tableLayoutPanel1->SuspendLayout();
 			this->tableLayoutPanel2->SuspendLayout();
 			this->tableLayoutPanel3->SuspendLayout();

@@ -163,7 +163,10 @@ System::Windows::Forms::Button^ MainForm::createMusicButton(std::string text, st
 }
 
 System::Void MainForm::addMusicButton(std::string text, std::string path, PlaylistNode* node) {
-	this->allMusicPage->Controls->Add(this->createMusicButton(text, path, node));
+	auto musicButton = this->createMusicButton(text, path, node);
+
+	this->allMusicPage->Controls->Add(musicButton);
+	this->toolTip->SetToolTip(musicButton, StringHelper::toSystemString(text));
 }
 
 System::Void MainForm::musicButton_Click(System::Object^ sender, System::EventArgs^ e) {
