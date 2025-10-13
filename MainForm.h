@@ -79,10 +79,15 @@ namespace SoundPlayer {
 	private: System::Windows::Forms::PictureBox^ musicPictureBox;
 	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel7;
 	private: System::Windows::Forms::Label^ musicName;
+	private: System::Windows::Forms::Label^ musicArtist;
+
+
 
 
 
 	private: bool isProgrammaticTrackChange = false;
+
+	private: System::Drawing::Image^ defaultMusicImage;
 
 	protected:
 
@@ -129,9 +134,10 @@ namespace SoundPlayer {
 			this->tableLayoutPanel6 = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->musicPictureBox = (gcnew System::Windows::Forms::PictureBox());
 			this->tableLayoutPanel7 = (gcnew System::Windows::Forms::TableLayoutPanel());
+			this->musicName = (gcnew System::Windows::Forms::Label());
+			this->musicArtist = (gcnew System::Windows::Forms::Label());
 			this->musicTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->toolTip = (gcnew System::Windows::Forms::ToolTip(this->components));
-			this->musicName = (gcnew System::Windows::Forms::Label());
 			this->tableLayoutPanel1->SuspendLayout();
 			this->tableLayoutPanel2->SuspendLayout();
 			this->tableLayoutPanel3->SuspendLayout();
@@ -498,7 +504,7 @@ namespace SoundPlayer {
 			this->musicPictureBox->Location = System::Drawing::Point(3, 3);
 			this->musicPictureBox->Name = L"musicPictureBox";
 			this->musicPictureBox->Size = System::Drawing::Size(500, 452);
-			this->musicPictureBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->musicPictureBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->musicPictureBox->TabIndex = 0;
 			this->musicPictureBox->TabStop = false;
 			// 
@@ -512,18 +518,15 @@ namespace SoundPlayer {
 			this->tableLayoutPanel7->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 				10)));
 			this->tableLayoutPanel7->Controls->Add(this->musicName, 1, 0);
+			this->tableLayoutPanel7->Controls->Add(this->musicArtist, 1, 1);
 			this->tableLayoutPanel7->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->tableLayoutPanel7->Location = System::Drawing::Point(3, 461);
 			this->tableLayoutPanel7->Name = L"tableLayoutPanel7";
-			this->tableLayoutPanel7->RowCount = 1;
-			this->tableLayoutPanel7->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 100)));
+			this->tableLayoutPanel7->RowCount = 2;
+			this->tableLayoutPanel7->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 70)));
+			this->tableLayoutPanel7->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 30)));
 			this->tableLayoutPanel7->Size = System::Drawing::Size(500, 109);
 			this->tableLayoutPanel7->TabIndex = 1;
-			// 
-			// musicTimer
-			// 
-			this->musicTimer->Interval = 1000;
-			this->musicTimer->Tick += gcnew System::EventHandler(this, &MainForm::musicTimer_Tick);
 			// 
 			// musicName
 			// 
@@ -533,10 +536,28 @@ namespace SoundPlayer {
 				static_cast<System::Byte>(204)));
 			this->musicName->Location = System::Drawing::Point(53, 0);
 			this->musicName->Name = L"musicName";
-			this->musicName->Size = System::Drawing::Size(394, 109);
+			this->musicName->Size = System::Drawing::Size(394, 76);
 			this->musicName->TabIndex = 0;
 			this->musicName->Text = L"Select music";
 			this->musicName->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// musicArtist
+			// 
+			this->musicArtist->AutoSize = true;
+			this->musicArtist->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->musicArtist->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->musicArtist->Location = System::Drawing::Point(53, 76);
+			this->musicArtist->Name = L"musicArtist";
+			this->musicArtist->Size = System::Drawing::Size(394, 33);
+			this->musicArtist->TabIndex = 1;
+			this->musicArtist->Text = L"-";
+			this->musicArtist->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// musicTimer
+			// 
+			this->musicTimer->Interval = 1000;
+			this->musicTimer->Tick += gcnew System::EventHandler(this, &MainForm::musicTimer_Tick);
 			// 
 			// MainForm
 			// 
@@ -575,6 +596,8 @@ namespace SoundPlayer {
 #pragma endregion
 
 	private: void setMusicInfo();
+
+	private: void setMusicCover();
 
 	private: int getTrackBarValue(System::Object^ sender);
 

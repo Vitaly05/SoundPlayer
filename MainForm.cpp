@@ -30,6 +30,20 @@ void MainForm::setMusicInfo() {
 	this->musicTimer->Start();
 
 	this->musicName->Text = StringHelper::toSystemString(currentMusic->name);
+	this->musicArtist->Text = StringHelper::toSystemString(currentMusic->artist);
+
+	this->setMusicCover();
+}
+
+void MainForm::setMusicCover() {
+	auto ms = this->playlist->currentMusic->getCoverImageMemoryStream();
+
+	if (!ms) {
+		this->musicPictureBox->Image = this->defaultMusicImage;
+	}
+	else {
+		this->musicPictureBox->Image = System::Drawing::Image::FromStream(ms);
+	}
 }
 
 int MainForm::getTrackBarValue(System::Object^ sender) {
@@ -133,6 +147,8 @@ System::Void MainForm::pitchUpDown_ValueChanged(System::Object^ sender, System::
 }
 
 System::Void MainForm::MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
+	this->defaultMusicImage = this->musicPictureBox->Image;
+
 	auto musicPatches = DirectoryHelper::getMusicPathesArray();
 	
 	this->playlist = new Playlist(this->musicWrapper, musicPatches);
