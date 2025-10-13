@@ -7,6 +7,7 @@
 
 using namespace SoundPlayer;
 
+[STAThreadAttribute]
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// Console for debug
 	AllocConsole();
@@ -56,6 +57,22 @@ int MainForm::getNumericUpDownValue(System::Object^ sender) {
 	NumericUpDown^ numericUpDown = safe_cast<NumericUpDown^>(sender);
 
 	return Decimal::ToInt32(numericUpDown->Value);
+}
+
+void MainForm::scanMusicAndAddButtons() {
+	this->allMusicPage->Controls->Clear();
+
+	auto musicPatches = DirectoryHelper::getMusicPathesArray();
+
+	this->playlist = new Playlist(this->musicWrapper, musicPatches);
+
+	PlaylistNode* music = this->playlist->firstMusic;
+
+	do {
+		addMusicButton(music->name, music->path, music);
+
+		music = music->next;
+	} while (music != this->playlist->firstMusic);
 }
 
 System::Void MainForm::playButton_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -149,17 +166,7 @@ System::Void MainForm::pitchUpDown_ValueChanged(System::Object^ sender, System::
 System::Void MainForm::MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	this->defaultMusicImage = this->musicPictureBox->Image;
 
-	auto musicPatches = DirectoryHelper::getMusicPathesArray();
-	
-	this->playlist = new Playlist(this->musicWrapper, musicPatches);
-
-	PlaylistNode* music = this->playlist->firstMusic;
-
-	do {
-		addMusicButton(music->name, music->path, music);
-
-		music = music->next;
-	} while (music != this->playlist->firstMusic);
+	this->scanMusicAndAddButtons();
 }
 
 System::Windows::Forms::Button^ MainForm::createMusicButton(std::string text, std::string path, PlaylistNode* node) {
@@ -198,5 +205,18 @@ System::Void MainForm::musicButton_Click(System::Object^ sender, System::EventAr
 
 	if (res) {
 		this->setMusicInfo();
+	}
+}
+
+System::Void MainForm::openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (this->openMusicFileDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+		for each (auto fileName in this->openMusicFileDialog->FileNames) {
+			auto name = Path::GetFileName(fileName);
+			auto destPath = Path::Combine(StringHelper::toSystemString(DirectoryHelper::musicFolderPath), name);
+
+			System::IO::File::Copy(fileName, destPath, true);
+		}
+
+		this->scanMusicAndAddButtons();
 	}
 }
