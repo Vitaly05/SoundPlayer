@@ -36,6 +36,20 @@ void MainForm::setMusicInfo() {
 	this->setMusicCover();
 }
 
+void MainForm::setDefaultMusicInfo() {
+	int duration = 0;
+	PlaylistNode* currentMusic = nullptr;
+
+	this->musicProgressBar->Maximum = 0;
+	this->maxTime->Text = TimeHelper::formatSeconds(0);
+	this->musicTimer->Stop();
+
+	this->musicName->Text = "Выберите музыку";
+	this->musicArtist->Text = "-";
+
+	this->musicPictureBox->Image = this->defaultMusicImage;
+}
+
 void MainForm::setMusicCover() {
 	auto ms = this->playlist->currentMusic->getCoverImageMemoryStream();
 
@@ -175,23 +189,50 @@ System::Void MainForm::MainForm_Load(System::Object^ sender, System::EventArgs^ 
 	this->scanMusicAndAddButtons();
 }
 
-System::Windows::Forms::Button^ MainForm::createMusicButton(std::string text, std::string path, PlaylistNode* node) {
-	System::Windows::Forms::Button^ musicButton = (gcnew System::Windows::Forms::Button());
+System::Windows::Forms::TableLayoutPanel^ MainForm::createMusicButton(std::string text, std::string path, PlaylistNode* node) {
+	auto newMusicButtonTableLayoutPanel = (gcnew System::Windows::Forms::TableLayoutPanel());
+	auto newMusicButton = (gcnew System::Windows::Forms::Button());
+	auto newDeleteMusicButton = (gcnew System::Windows::Forms::Button());
 
-	musicButton->Cursor = System::Windows::Forms::Cursors::Hand;
-	musicButton->Dock = System::Windows::Forms::DockStyle::Top;
-	musicButton->Location = System::Drawing::Point(3, 3);
-	musicButton->Name = L"musicButton-" + msclr::interop::marshal_as<System::String^>(text);
-	musicButton->Size = System::Drawing::Size(263, 23);
-	musicButton->TabIndex = 0;
-	musicButton->Text = StringHelper::toSystemString(text);
-	musicButton->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
-	musicButton->UseVisualStyleBackColor = true;
-	musicButton->Click += gcnew System::EventHandler(this, &MainForm::musicButton_Click);
+	newMusicButtonTableLayoutPanel->ColumnCount = 2;
+	newMusicButtonTableLayoutPanel->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+		100)));
+	newMusicButtonTableLayoutPanel->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Absolute,
+		40)));
+	newMusicButtonTableLayoutPanel->Controls->Add(newMusicButton, 0, 0);
+	newMusicButtonTableLayoutPanel->Controls->Add(newDeleteMusicButton, 1, 0);
+	newMusicButtonTableLayoutPanel->Dock = System::Windows::Forms::DockStyle::Top;
+	newMusicButtonTableLayoutPanel->Location = System::Drawing::Point(3, 75);
+	newMusicButtonTableLayoutPanel->Name = L"musicButtonTableLayoutPanel";
+	newMusicButtonTableLayoutPanel->RowCount = 1;
+	newMusicButtonTableLayoutPanel->RowStyles->Add((gcnew System::Windows::Forms::RowStyle()));
+	newMusicButtonTableLayoutPanel->Size = System::Drawing::Size(263, 39);
 
-	musicButton->Tag = IntPtr(node);
+	newMusicButton->Cursor = System::Windows::Forms::Cursors::Hand;
+	newMusicButton->Dock = System::Windows::Forms::DockStyle::Fill;
+	newMusicButton->Location = System::Drawing::Point(3, 3);
+	newMusicButton->Margin = System::Windows::Forms::Padding(3, 3, 0, 3);
+	newMusicButton->Name = L"musicButton-" + StringHelper::toSystemString(text);
+	newMusicButton->Size = System::Drawing::Size(220, 34);
+	newMusicButton->Text = StringHelper::toSystemString(text);
+	newMusicButton->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+	newMusicButton->UseVisualStyleBackColor = true;
+	newMusicButton->Click += gcnew System::EventHandler(this, &MainForm::musicButton_Click);
+	newMusicButton->Tag = IntPtr(node);
 
-	return musicButton;
+	newDeleteMusicButton->Cursor = System::Windows::Forms::Cursors::Hand;
+	newDeleteMusicButton->Dock = System::Windows::Forms::DockStyle::Fill;
+	newDeleteMusicButton->ImageKey = L"trash.png";
+	newDeleteMusicButton->ImageList = this->iconsImageList;
+	newDeleteMusicButton->Location = System::Drawing::Point(223, 3);
+	newDeleteMusicButton->Margin = System::Windows::Forms::Padding(0, 3, 3, 3);
+	newDeleteMusicButton->Name = L"deleteMusicButton";
+	newDeleteMusicButton->Size = System::Drawing::Size(37, 34);
+	newDeleteMusicButton->UseVisualStyleBackColor = true;
+	newDeleteMusicButton->Click += gcnew System::EventHandler(this, &MainForm::DeleteMusicButton_Click);
+	newDeleteMusicButton->Tag = IntPtr(node);
+
+	return newMusicButtonTableLayoutPanel;
 }
 
 System::Void MainForm::addMusicButton(std::string text, std::string path, PlaylistNode* node) {
@@ -214,13 +255,40 @@ System::Void MainForm::musicButton_Click(System::Object^ sender, System::EventAr
 	}
 }
 
-System::Void MainForm::openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	if (this->openMusicFileDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
-		for each (auto fileName in this->openMusicFileDialog->FileNames) {
-			auto name = Path::GetFileName(fileName);
-			auto destPath = Path::Combine(StringHelper::toSystemString(DirectoryHelper::musicFolderPath), name);
+System::Void MainForm::DeleteMusicButton_Click(System::Object^ sender, System::EventArgs^ e) {
+	Button^ button = safe_cast<Button^>(sender);
 
-			System::IO::File::Copy(fileName, destPath, true);
+	IntPtr p = safe_cast<IntPtr>(button->Tag);
+	PlaylistNode* node = static_cast<PlaylistNode*>(p.ToPointer());
+
+	bool isPlaying = node == this->playlist->currentMusic;
+
+	bool isLastNode = this->playlist->deleteNode(node);
+
+	DirectoryHelper::deleteMusic(node->path);
+
+	button->Parent->Visible = false;
+
+	if (isLastNode) {
+		this->allMusicPage->Controls->Add(this->allPageEmptyLabel);
+
+		this->setDefaultMusicInfo();
+		
+	} else if (isPlaying) {
+		bool res = this->playlist->play();
+
+		if (res) {
+			this->setMusicInfo();
+		}
+	}
+
+	delete node;
+}
+
+System::Void MainForm::openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (this->addMusicFileDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+		for each (auto fileName in this->addMusicFileDialog->FileNames) {
+			DirectoryHelper::addMusic(fileName);
 		}
 
 		this->scanMusicAndAddButtons();

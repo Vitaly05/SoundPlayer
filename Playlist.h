@@ -27,5 +27,9 @@ public:
 	bool pause();
 	bool playNext();
 	bool playPrev();
+	/// <summary>
+	/// Returns true if this node was the last one, and false if there is another node.
+	/// </summary>
+	bool deleteNode(PlaylistNode* node);
 };
 

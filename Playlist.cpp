@@ -35,7 +35,11 @@ Playlist::Playlist(MusicWrapper* wrapper, std::vector<fs::path> musicPathes) {
 }
 
 bool Playlist::play() {
-	return this->currentMusic->play();
+	if (this && this->currentMusic) {
+		return this->currentMusic->play();
+	}
+
+	return false;
 }
 
 bool Playlist::play(PlaylistNode* music) {
@@ -45,10 +49,18 @@ bool Playlist::play(PlaylistNode* music) {
 }
 
 bool Playlist::pause() {
+	if (!this || !this->currentMusic) {
+		return false;
+	}
+
 	return this->musicWrapper->pause();
 }
 
 bool Playlist::playNext() {
+	if (!this || !this->currentMusic) {
+		return false;
+	}
+
 	PlaylistNode* next = this->currentMusic->next;
 
 	if (!next) {
@@ -61,6 +73,10 @@ bool Playlist::playNext() {
 }
 
 bool Playlist::playPrev() {
+	if (!this || !this->currentMusic) {
+		return false;
+	}
+
 	PlaylistNode* prev = this->currentMusic->prev;
 
 	if (!prev) {
@@ -77,4 +93,29 @@ void Playlist::playAnotherMusic(PlaylistNode* music) {
 
 	music->play();
 	this->currentMusic = music;
+}
+
+
+bool Playlist::deleteNode(PlaylistNode* node) {
+	if (node == this->currentMusic) {
+		this->musicWrapper->play("");
+	}
+
+	if (node->prev == node) {
+		this->musicWrapper->stop();
+
+		this->currentMusic = nullptr;
+		this->firstMusic = nullptr;
+
+		return true;
+	}
+
+	node->prev->next = node->next;
+	node->next->prev = node->prev;
+
+	if (node == this->currentMusic) {
+		this->currentMusic = node->next;
+	}
+
+	return false;
 }

@@ -17,3 +17,14 @@ std::vector<fs::path> DirectoryHelper::getMusicPathesArray() {
 
 	return musicPathes;
 }
+
+void DirectoryHelper::addMusic(System::String^ path) {
+	auto name = System::IO::Path::GetFileName(path);
+	auto destPath = System::IO::Path::Combine(StringHelper::toSystemString(DirectoryHelper::musicFolderPath), name);
+
+	System::IO::File::Copy(path, destPath, true);
+}
+
+void DirectoryHelper::deleteMusic(std::string path) {
+	System::IO::File::Delete(StringHelper::toSystemString(path));
+}
