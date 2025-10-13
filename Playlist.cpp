@@ -25,6 +25,8 @@ Playlist::Playlist(MusicWrapper* wrapper, std::vector<fs::path> musicPathes) {
 
 			prevNode->next = node;
 			firstNode->prev = node;
+
+			prevNode = node;
 		}
 	}
 

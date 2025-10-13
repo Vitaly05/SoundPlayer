@@ -112,6 +112,7 @@ namespace SoundPlayer {
 			this->volumeBar = (gcnew System::Windows::Forms::TrackBar());
 			this->volumeUpDown = (gcnew System::Windows::Forms::NumericUpDown());
 			this->tableLayoutPanel5 = (gcnew System::Windows::Forms::TableLayoutPanel());
+			this->pitchLabel = (gcnew System::Windows::Forms::Label());
 			this->pitchBar = (gcnew System::Windows::Forms::TrackBar());
 			this->pitchUpDown = (gcnew System::Windows::Forms::NumericUpDown());
 			this->musicTabPanel = (gcnew System::Windows::Forms::TabControl());
@@ -119,7 +120,6 @@ namespace SoundPlayer {
 			this->musicButtonTemplate = (gcnew System::Windows::Forms::Button());
 			this->playlistsPage = (gcnew System::Windows::Forms::TabPage());
 			this->musicTimer = (gcnew System::Windows::Forms::Timer(this->components));
-			this->pitchLabel = (gcnew System::Windows::Forms::Label());
 			this->tableLayoutPanel1->SuspendLayout();
 			this->tableLayoutPanel2->SuspendLayout();
 			this->tableLayoutPanel3->SuspendLayout();
@@ -379,6 +379,17 @@ namespace SoundPlayer {
 			this->tableLayoutPanel5->Size = System::Drawing::Size(50, 573);
 			this->tableLayoutPanel5->TabIndex = 6;
 			// 
+			// pitchLabel
+			// 
+			this->pitchLabel->AutoSize = true;
+			this->pitchLabel->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->pitchLabel->Location = System::Drawing::Point(3, 515);
+			this->pitchLabel->Name = L"pitchLabel";
+			this->pitchLabel->Size = System::Drawing::Size(44, 58);
+			this->pitchLabel->TabIndex = 9;
+			this->pitchLabel->Text = L"Pitch";
+			this->pitchLabel->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
 			// pitchBar
 			// 
 			this->pitchBar->Dock = System::Windows::Forms::DockStyle::Fill;
@@ -452,17 +463,6 @@ namespace SoundPlayer {
 			// 
 			this->musicTimer->Interval = 1000;
 			this->musicTimer->Tick += gcnew System::EventHandler(this, &MainForm::musicTimer_Tick);
-			// 
-			// pitchLabel
-			// 
-			this->pitchLabel->AutoSize = true;
-			this->pitchLabel->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->pitchLabel->Location = System::Drawing::Point(3, 515);
-			this->pitchLabel->Name = L"pitchLabel";
-			this->pitchLabel->Size = System::Drawing::Size(44, 58);
-			this->pitchLabel->TabIndex = 9;
-			this->pitchLabel->Text = L"Pitch";
-			this->pitchLabel->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// MainForm
 			// 
