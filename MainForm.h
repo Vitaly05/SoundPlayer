@@ -89,6 +89,7 @@ namespace SoundPlayer {
 	private: System::Windows::Forms::OpenFileDialog^ openMusicFileDialog;
 	private: System::Windows::Forms::ToolStripMenuItem^ fileToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ openToolStripMenuItem;
+	private: System::Windows::Forms::Label^ allPageEmptyLabel;
 
 
 	private: System::Drawing::Image^ defaultMusicImage;
@@ -135,6 +136,7 @@ namespace SoundPlayer {
 			this->pitchUpDown = (gcnew System::Windows::Forms::NumericUpDown());
 			this->musicTabPanel = (gcnew System::Windows::Forms::TabControl());
 			this->allMusicPage = (gcnew System::Windows::Forms::TabPage());
+			this->allPageEmptyLabel = (gcnew System::Windows::Forms::Label());
 			this->musicButtonTemplate = (gcnew System::Windows::Forms::Button());
 			this->playlistsPage = (gcnew System::Windows::Forms::TabPage());
 			this->tableLayoutPanel6 = (gcnew System::Windows::Forms::TableLayoutPanel());
@@ -176,14 +178,14 @@ namespace SoundPlayer {
 			// 
 			this->fileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->openToolStripMenuItem });
 			this->fileToolStripMenuItem->Name = L"fileToolStripMenuItem";
-			this->fileToolStripMenuItem->Size = System::Drawing::Size(37, 20);
-			this->fileToolStripMenuItem->Text = L"File";
+			this->fileToolStripMenuItem->Size = System::Drawing::Size(62, 20);
+			this->fileToolStripMenuItem->Text = L"Музыка";
 			// 
 			// openToolStripMenuItem
 			// 
 			this->openToolStripMenuItem->Name = L"openToolStripMenuItem";
 			this->openToolStripMenuItem->Size = System::Drawing::Size(180, 22);
-			this->openToolStripMenuItem->Text = L"Open";
+			this->openToolStripMenuItem->Text = L"Открыть";
 			this->openToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::openToolStripMenuItem_Click);
 			// 
 			// tableLayoutPanel1
@@ -472,6 +474,7 @@ namespace SoundPlayer {
 			// allMusicPage
 			// 
 			this->allMusicPage->AutoScroll = true;
+			this->allMusicPage->Controls->Add(this->allPageEmptyLabel);
 			this->allMusicPage->Controls->Add(this->musicButtonTemplate);
 			this->allMusicPage->Location = System::Drawing::Point(4, 22);
 			this->allMusicPage->Name = L"allMusicPage";
@@ -480,6 +483,18 @@ namespace SoundPlayer {
 			this->allMusicPage->TabIndex = 0;
 			this->allMusicPage->Text = L"Все песни";
 			this->allMusicPage->UseVisualStyleBackColor = true;
+			// 
+			// allPageEmptyLabel
+			// 
+			this->allPageEmptyLabel->Dock = System::Windows::Forms::DockStyle::Top;
+			this->allPageEmptyLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
+			this->allPageEmptyLabel->Location = System::Drawing::Point(3, 26);
+			this->allPageEmptyLabel->Name = L"allPageEmptyLabel";
+			this->allPageEmptyLabel->Size = System::Drawing::Size(263, 72);
+			this->allPageEmptyLabel->TabIndex = 1;
+			this->allPageEmptyLabel->Text = L" Добавьте музыку\r\n\r\n(Музыка -> Открыть)";
+			this->allPageEmptyLabel->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// musicButtonTemplate
 			// 
