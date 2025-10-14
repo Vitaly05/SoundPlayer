@@ -73,15 +73,15 @@ int MainForm::getNumericUpDownValue(System::Object^ sender) {
 }
 
 void MainForm::scanMusicAndAddButtons() {
-	auto musicPatches = DirectoryHelper::getMusicPathesArray();
+	auto musicPathes = DirectoryHelper::getMusicPathesArray();
 
-	if (musicPatches.size() == 0) {
+	if (musicPathes.size() == 0) {
 		this->allMusicPage->Controls->Add(this->allPageEmptyLabel);
 
 		return;
 	}
 
-	this->playlist = new Playlist(this->musicWrapper, musicPatches);
+	this->playlist = new Playlist(this->musicWrapper, musicPathes);
 
 	PlaylistNode* music = this->playlist->firstMusic;
 

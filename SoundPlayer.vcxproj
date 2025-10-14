@@ -78,7 +78,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\.БГУИР\КПО Курсач\SoundPlayer\SFML-2.6.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\.БГУИР\КПО Курсач\SoundPlayer\SFML-2.6.2\include;D:\.БГУИР\КПО Курсач\SoundPlayer\nlohmann\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -114,6 +114,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -144,6 +147,7 @@
     </ClInclude>
     <ClInclude Include="MusicWrapper.h" />
     <ClInclude Include="Playlist.h" />
+    <ClInclude Include="PlaylistInfo.h" />
     <ClInclude Include="PlaylistNode.h" />
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="TimeHelper.h" />

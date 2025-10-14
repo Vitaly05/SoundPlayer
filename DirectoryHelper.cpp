@@ -19,12 +19,38 @@ std::vector<fs::path> DirectoryHelper::getMusicPathesArray() {
 }
 
 void DirectoryHelper::addMusic(System::String^ path) {
-	auto name = System::IO::Path::GetFileName(path);
-	auto destPath = System::IO::Path::Combine(StringHelper::toSystemString(DirectoryHelper::musicFolderPath), name);
+	auto name = Path::GetFileName(path);
+	auto destPath = Path::Combine(StringHelper::toSystemString(DirectoryHelper::musicFolderPath), name);
 
-	System::IO::File::Copy(path, destPath, true);
+	Directory::CreateDirectory(StringHelper::toSystemString(DirectoryHelper::musicFolderPath));
+
+	File::Copy(path, destPath, true);
 }
 
 void DirectoryHelper::deleteMusic(std::string path) {
-	System::IO::File::Delete(StringHelper::toSystemString(path));
+	File::Delete(StringHelper::toSystemString(path));
+}
+
+void DirectoryHelper::savePlaylist(PlaylistInfo^ playlistInfo) {
+	String^ json = JsonConvert::SerializeObject(playlistInfo, Formatting::None);
+
+	Directory::CreateDirectory(StringHelper::toSystemString(DirectoryHelper::playlistsFolderPath));
+
+	File::WriteAllText(
+		Path::Combine(
+			StringHelper::toSystemString(DirectoryHelper::playlistsFolderPath),
+			DirectoryHelper::makeSafeFileName(playlistInfo->name) + ".json"
+		),
+		json
+	);
+}
+
+String^ DirectoryHelper::makeSafeFileName(String^ name) {
+	String^ invalidChars = Regex::Escape(gcnew String(Path::GetInvalidFileNameChars()));
+	String^ pattern = "[" + invalidChars + "]";
+	String^ safeName = Regex::Replace(name, pattern, "_");
+
+	safeName = safeName->Replace(" ", "_");
+
+	return safeName;
 }
