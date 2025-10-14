@@ -1,4 +1,3 @@
-
 #include "MainForm.h"
 
 #include <Windows.h>
@@ -293,4 +292,9 @@ System::Void MainForm::openToolStripMenuItem_Click(System::Object^ sender, Syste
 
 		this->scanMusicAndAddButtons();
 	}
+}
+
+System::Void MainForm::createPlaylistStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	CreatePlaylistForm^ form = gcnew CreatePlaylistForm();
+	form->ShowDialog();
 }

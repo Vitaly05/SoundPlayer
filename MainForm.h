@@ -5,6 +5,8 @@
 #include "TimeHelper.h"
 #include "StringHelper.h"
 
+#include "CreatePlaylistForm.h"
+
 namespace SoundPlayer {
 
 	using namespace System;
@@ -94,6 +96,9 @@ namespace SoundPlayer {
 	private: System::Windows::Forms::Label^ allPageEmptyLabel;
 	private: System::Windows::Forms::TableLayoutPanel^ musicButtonTableLayoutPanel;
 	private: System::Windows::Forms::Button^ deleteMusicButton;
+	private: System::Windows::Forms::Label^ playlistsPageEmptyLabel;
+	private: System::Windows::Forms::ToolStripMenuItem^ playlistToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ createPlaylistStripMenuItem;
 
 
 
@@ -121,6 +126,8 @@ namespace SoundPlayer {
 			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
 			this->fileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->addMusicStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->playlistToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->createPlaylistStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->tableLayoutPanel1 = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->tableLayoutPanel2 = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->prevButton = (gcnew System::Windows::Forms::Button());
@@ -147,6 +154,7 @@ namespace SoundPlayer {
 			this->musicButtonTemplate = (gcnew System::Windows::Forms::Button());
 			this->allPageEmptyLabel = (gcnew System::Windows::Forms::Label());
 			this->playlistsPage = (gcnew System::Windows::Forms::TabPage());
+			this->playlistsPageEmptyLabel = (gcnew System::Windows::Forms::Label());
 			this->tableLayoutPanel6 = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->musicPictureBox = (gcnew System::Windows::Forms::PictureBox());
 			this->tableLayoutPanel7 = (gcnew System::Windows::Forms::TableLayoutPanel());
@@ -169,6 +177,7 @@ namespace SoundPlayer {
 			this->musicTabPanel->SuspendLayout();
 			this->allMusicPage->SuspendLayout();
 			this->musicButtonTableLayoutPanel->SuspendLayout();
+			this->playlistsPage->SuspendLayout();
 			this->tableLayoutPanel6->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->musicPictureBox))->BeginInit();
 			this->tableLayoutPanel7->SuspendLayout();
@@ -176,7 +185,10 @@ namespace SoundPlayer {
 			// 
 			// menuStrip1
 			// 
-			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->fileToolStripMenuItem });
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->fileToolStripMenuItem,
+					this->playlistToolStripMenuItem
+			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
 			this->menuStrip1->Size = System::Drawing::Size(1033, 24);
@@ -196,6 +208,20 @@ namespace SoundPlayer {
 			this->addMusicStripMenuItem->Size = System::Drawing::Size(126, 22);
 			this->addMusicStripMenuItem->Text = L"Добавить";
 			this->addMusicStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::openToolStripMenuItem_Click);
+			// 
+			// playlistToolStripMenuItem
+			// 
+			this->playlistToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->createPlaylistStripMenuItem });
+			this->playlistToolStripMenuItem->Name = L"playlistToolStripMenuItem";
+			this->playlistToolStripMenuItem->Size = System::Drawing::Size(73, 20);
+			this->playlistToolStripMenuItem->Text = L"Плейлист";
+			// 
+			// createPlaylistStripMenuItem
+			// 
+			this->createPlaylistStripMenuItem->Name = L"createPlaylistStripMenuItem";
+			this->createPlaylistStripMenuItem->Size = System::Drawing::Size(117, 22);
+			this->createPlaylistStripMenuItem->Text = L"Создать";
+			this->createPlaylistStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::createPlaylistStripMenuItem_Click);
 			// 
 			// tableLayoutPanel1
 			// 
@@ -552,6 +578,7 @@ namespace SoundPlayer {
 			// 
 			// playlistsPage
 			// 
+			this->playlistsPage->Controls->Add(this->playlistsPageEmptyLabel);
 			this->playlistsPage->Location = System::Drawing::Point(4, 22);
 			this->playlistsPage->Name = L"playlistsPage";
 			this->playlistsPage->Padding = System::Windows::Forms::Padding(3);
@@ -559,6 +586,18 @@ namespace SoundPlayer {
 			this->playlistsPage->TabIndex = 1;
 			this->playlistsPage->Text = L"Плейлисты";
 			this->playlistsPage->UseVisualStyleBackColor = true;
+			// 
+			// playlistsPageEmptyLabel
+			// 
+			this->playlistsPageEmptyLabel->Dock = System::Windows::Forms::DockStyle::Top;
+			this->playlistsPageEmptyLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
+			this->playlistsPageEmptyLabel->Location = System::Drawing::Point(3, 3);
+			this->playlistsPageEmptyLabel->Name = L"playlistsPageEmptyLabel";
+			this->playlistsPageEmptyLabel->Size = System::Drawing::Size(263, 72);
+			this->playlistsPageEmptyLabel->TabIndex = 2;
+			this->playlistsPageEmptyLabel->Text = L"Создайте плейлист\r\n(Плейлист -> Создать)";
+			this->playlistsPageEmptyLabel->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// tableLayoutPanel6
 			// 
@@ -673,6 +712,7 @@ namespace SoundPlayer {
 			this->musicTabPanel->ResumeLayout(false);
 			this->allMusicPage->ResumeLayout(false);
 			this->musicButtonTableLayoutPanel->ResumeLayout(false);
+			this->playlistsPage->ResumeLayout(false);
 			this->tableLayoutPanel6->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->musicPictureBox))->EndInit();
 			this->tableLayoutPanel7->ResumeLayout(false);
@@ -726,5 +766,7 @@ namespace SoundPlayer {
 	private: System::Void DeleteMusicButton_Click(System::Object^ sender, System::EventArgs^ e);
 
 	private: System::Void openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+
+	private: System::Void createPlaylistStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }
