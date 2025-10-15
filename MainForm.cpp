@@ -347,6 +347,17 @@ System::Void MainForm::DeleteMusicButton_Click(System::Object^ sender, System::E
 	IntPtr p = safe_cast<IntPtr>(button->Tag);
 	PlaylistNode* node = static_cast<PlaylistNode*>(p.ToPointer());
 
+	auto res = MessageBox::Show(
+		"Вы уверены, что хотите удалить песню \"" + StringHelper::toSystemString(node->name) + "\"?",
+		"Подтверждение",
+		MessageBoxButtons::YesNo,
+		MessageBoxIcon::Question
+	);
+
+	if (res != System::Windows::Forms::DialogResult::Yes) {
+		return;
+	}
+
 	bool isPlaying = node == this->playlist->currentMusic;
 
 	bool isLastNode = this->playlist->deleteNode(node);
