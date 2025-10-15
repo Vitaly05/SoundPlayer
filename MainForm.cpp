@@ -331,6 +331,7 @@ TableLayoutPanel^ MainForm::createPlaylistButton(PlaylistInfo^ playlistInfo) {
 	newPlaylistEditButton->UseVisualStyleBackColor = true;
 	newPlaylistEditButton->Name = L"editPlaylistButton_" + DirectoryHelper::makeSafeFileName(playlistInfo->name);
 	newPlaylistEditButton->Tag = playlistInfo;
+	newPlaylistEditButton->Click += gcnew EventHandler(this, &MainForm::editPlaylistButton_Click);
 	this->toolTip->SetToolTip(newPlaylistEditButton, playlistInfo->name);
 	
 	newPlaylistDeleteButton->Cursor = System::Windows::Forms::Cursors::Hand;
@@ -490,4 +491,14 @@ System::Void MainForm::playlistButton_Click(System::Object^ sender, System::Even
 	this->scanPlaylistAndAddMusicButtons(playlistInfo);
 
 	this->musicTabPanel->SelectedTab = this->selectedPlaylistPage;
+}
+
+System::Void MainForm::editPlaylistButton_Click(System::Object^ sender, System::EventArgs^ e) {
+	Button^ button = safe_cast<Button^>(sender);
+	PlaylistInfo^ playlistInfo = safe_cast<PlaylistInfo^>(button->Tag);
+
+	CreatePlaylistForm^ form = gcnew CreatePlaylistForm(playlistInfo);
+	form->ShowDialog();
+
+	this->scanPlaylistsAndAddButtons();
 }

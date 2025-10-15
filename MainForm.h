@@ -381,10 +381,10 @@ namespace SoundPlayer {
 			// 
 			this->musicProgressBar->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->musicProgressBar->LargeChange = 10;
-			this->musicProgressBar->Location = System::Drawing::Point(39, 3);
+			this->musicProgressBar->Location = System::Drawing::Point(45, 3);
 			this->musicProgressBar->Maximum = 180;
 			this->musicProgressBar->Name = L"musicProgressBar";
-			this->musicProgressBar->Size = System::Drawing::Size(286, 27);
+			this->musicProgressBar->Size = System::Drawing::Size(335, 27);
 			this->musicProgressBar->TabIndex = 1;
 			this->musicProgressBar->ValueChanged += gcnew System::EventHandler(this, &MainForm::musicProgressBar_ValueChanged);
 			// 
@@ -394,7 +394,7 @@ namespace SoundPlayer {
 			this->currentTime->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->currentTime->Location = System::Drawing::Point(3, 0);
 			this->currentTime->Name = L"currentTime";
-			this->currentTime->Size = System::Drawing::Size(30, 33);
+			this->currentTime->Size = System::Drawing::Size(36, 33);
 			this->currentTime->TabIndex = 2;
 			this->currentTime->Text = L"0:00";
 			this->currentTime->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -403,9 +403,9 @@ namespace SoundPlayer {
 			// 
 			this->maxTime->AutoSize = true;
 			this->maxTime->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->maxTime->Location = System::Drawing::Point(331, 0);
+			this->maxTime->Location = System::Drawing::Point(386, 0);
 			this->maxTime->Name = L"maxTime";
-			this->maxTime->Size = System::Drawing::Size(32, 33);
+			this->maxTime->Size = System::Drawing::Size(38, 33);
 			this->maxTime->TabIndex = 3;
 			this->maxTime->Text = L"0:00";
 			this->maxTime->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -901,5 +901,7 @@ namespace SoundPlayer {
 	private: System::Void deletePlaylistButton_Click(System::Object^ sender, System::EventArgs^ e);
 
 	private: System::Void playlistButton_Click(System::Object^ sender, System::EventArgs^ e);
+
+	private: System::Void editPlaylistButton_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

@@ -106,9 +106,30 @@ void CreatePlaylistForm::fillAllMusicPage() {
 	this->allMusicPage->Controls->Clear();
 
 	for (auto path : musicPathes) {
+		if (this->isEditMode && this->editingPlaylistInfo->musicPathes->Contains(StringHelper::toSystemString(path.string()))) {
+			continue;
+		}
+
 		auto node = new PlaylistNode(path.string(), path.filename().string(), nullptr);
 
 		this->createAddMusicButton(node);
+	}
+}
+
+void CreatePlaylistForm::fillSelectedMusicPage() {
+	if (!isEditMode || this->editingPlaylistInfo->musicPathes->Count == 0) {
+		return;
+	}
+
+	this->selectedMusicPage->Controls->Clear();
+
+	for each (auto path in this->editingPlaylistInfo->musicPathes) {
+		auto fsPath = fs::path(StringHelper::toStdString(path));
+		auto node = new PlaylistNode(fsPath.string(), fsPath.filename().string(), nullptr);
+
+		this->createSelectedMusicButton(node);
+
+		this->addedMusicPathes->Add(path);
 	}
 }
 
@@ -142,6 +163,11 @@ bool CreatePlaylistForm::validateParams() {
 
 System::Void CreatePlaylistForm::CreatePlaylistForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	this->fillAllMusicPage();
+
+	if (this->isEditMode) {
+		this->fillSelectedMusicPage();
+		this->nameTextBox->Text = this->editingPlaylistInfo->name;
+	}
 }
 
 System::Void CreatePlaylistForm::AddMusicButton_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -197,6 +223,10 @@ System::Void CreatePlaylistForm::saveButton_Click(System::Object^ sender, System
 
 	auto name = this->nameTextBox->Text;
 	auto playlistInfo = gcnew PlaylistInfo(name, this->addedMusicPathes);
+
+	if (this->isEditMode) {
+		DirectoryHelper::deleteFile(this->editingPlaylistInfo->path);
+	}
 
 	DirectoryHelper::savePlaylist(playlistInfo);
 

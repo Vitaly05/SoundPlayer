@@ -29,6 +29,14 @@ namespace SoundPlayer {
 			InitializeComponent();
 		}
 
+		CreatePlaylistForm(PlaylistInfo^ playlistInfo)
+		{
+			InitializeComponent();
+
+			this->isEditMode = true;
+			this->editingPlaylistInfo = playlistInfo;
+		}
+
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -82,6 +90,8 @@ namespace SoundPlayer {
 	protected:
 
 	private: List<String^>^ addedMusicPathes = gcnew List<String^>();
+	private: bool isEditMode = false;
+	private: PlaylistInfo^ editingPlaylistInfo;
 
 	private:
 		/// <summary>
@@ -474,6 +484,8 @@ namespace SoundPlayer {
 	private: void createSelectedMusicButton(PlaylistNode* node);
 
 	private: void fillAllMusicPage();
+
+	private: void fillSelectedMusicPage();
 
 	private: bool validateParams();
 
