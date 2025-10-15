@@ -516,3 +516,7 @@ System::Void MainForm::aboutToolStripMenuItem_Click(System::Object^ sender, Syst
 		MessageBoxIcon::Information
 	);
 }
+
+System::Void MainForm::closeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->contextMenuStrip->Close();
+}

@@ -114,6 +114,8 @@ namespace SoundPlayer {
 	private: System::Windows::Forms::ToolStripMenuItem^ playPrevToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripTextBox^ toolStripMusicName;
 	private: System::Windows::Forms::ToolStripSeparator^ toolStripSeparator1;
+	private: System::Windows::Forms::ToolStripMenuItem^ closeToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripSeparator^ toolStripSeparator2;
 
 
 
@@ -201,12 +203,14 @@ namespace SoundPlayer {
 			this->addMusicFileDialog = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->notifyIcon = (gcnew System::Windows::Forms::NotifyIcon(this->components));
 			this->contextMenuStrip = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
+			this->toolStripMusicName = (gcnew System::Windows::Forms::ToolStripTextBox());
+			this->toolStripSeparator1 = (gcnew System::Windows::Forms::ToolStripSeparator());
 			this->playToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->pauseToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->playNextToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->playPrevToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->toolStripMusicName = (gcnew System::Windows::Forms::ToolStripTextBox());
-			this->toolStripSeparator1 = (gcnew System::Windows::Forms::ToolStripSeparator());
+			this->closeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->toolStripSeparator2 = (gcnew System::Windows::Forms::ToolStripSeparator());
 			this->menuStrip1->SuspendLayout();
 			this->tableLayoutPanel1->SuspendLayout();
 			this->tableLayoutPanel2->SuspendLayout();
@@ -843,45 +847,14 @@ namespace SoundPlayer {
 			// 
 			// contextMenuStrip
 			// 
-			this->contextMenuStrip->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(6) {
+			this->contextMenuStrip->AutoClose = false;
+			this->contextMenuStrip->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(8) {
 				this->toolStripMusicName,
-					this->toolStripSeparator1, this->playToolStripMenuItem, this->pauseToolStripMenuItem, this->playNextToolStripMenuItem, this->playPrevToolStripMenuItem
+					this->toolStripSeparator1, this->playToolStripMenuItem, this->pauseToolStripMenuItem, this->playNextToolStripMenuItem, this->playPrevToolStripMenuItem,
+					this->toolStripSeparator2, this->closeToolStripMenuItem
 			});
 			this->contextMenuStrip->Name = L"contextMenuStrip";
-			this->contextMenuStrip->Size = System::Drawing::Size(182, 167);
-			// 
-			// playToolStripMenuItem
-			// 
-			this->playToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"playToolStripMenuItem.Image")));
-			this->playToolStripMenuItem->Name = L"playToolStripMenuItem";
-			this->playToolStripMenuItem->Size = System::Drawing::Size(181, 22);
-			this->playToolStripMenuItem->Text = L"Играть";
-			this->playToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::playButton_Click);
-			// 
-			// pauseToolStripMenuItem
-			// 
-			this->pauseToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pauseToolStripMenuItem.Image")));
-			this->pauseToolStripMenuItem->Name = L"pauseToolStripMenuItem";
-			this->pauseToolStripMenuItem->Size = System::Drawing::Size(181, 22);
-			this->pauseToolStripMenuItem->Text = L"Пауза";
-			this->pauseToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::pauseButton_Click);
-			// 
-			// playNextToolStripMenuItem
-			// 
-			this->playNextToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"playNextToolStripMenuItem.Image")));
-			this->playNextToolStripMenuItem->Name = L"playNextToolStripMenuItem";
-			this->playNextToolStripMenuItem->Size = System::Drawing::Size(181, 22);
-			this->playNextToolStripMenuItem->Text = L"Следующая песня";
-			this->playNextToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::nextButton_Click);
-			// 
-			// playPrevToolStripMenuItem
-			// 
-			this->playPrevToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"playPrevToolStripMenuItem.Image")));
-			this->playPrevToolStripMenuItem->Margin = System::Windows::Forms::Padding(0, 0, 0, 10);
-			this->playPrevToolStripMenuItem->Name = L"playPrevToolStripMenuItem";
-			this->playPrevToolStripMenuItem->Size = System::Drawing::Size(181, 22);
-			this->playPrevToolStripMenuItem->Text = L"Предыдущая песня";
-			this->playPrevToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::prevButton_Click);
+			this->contextMenuStrip->Size = System::Drawing::Size(311, 205);
 			// 
 			// toolStripMusicName
 			// 
@@ -892,14 +865,61 @@ namespace SoundPlayer {
 			this->toolStripMusicName->Margin = System::Windows::Forms::Padding(1, 10, 1, 1);
 			this->toolStripMusicName->Name = L"toolStripMusicName";
 			this->toolStripMusicName->ReadOnly = true;
-			this->toolStripMusicName->Size = System::Drawing::Size(100, 16);
+			this->toolStripMusicName->Size = System::Drawing::Size(250, 16);
 			this->toolStripMusicName->Text = L"Выберите музыку";
 			// 
 			// toolStripSeparator1
 			// 
 			this->toolStripSeparator1->Margin = System::Windows::Forms::Padding(0, 5, 0, 5);
 			this->toolStripSeparator1->Name = L"toolStripSeparator1";
-			this->toolStripSeparator1->Size = System::Drawing::Size(178, 6);
+			this->toolStripSeparator1->Size = System::Drawing::Size(307, 6);
+			// 
+			// playToolStripMenuItem
+			// 
+			this->playToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"playToolStripMenuItem.Image")));
+			this->playToolStripMenuItem->Name = L"playToolStripMenuItem";
+			this->playToolStripMenuItem->Size = System::Drawing::Size(310, 22);
+			this->playToolStripMenuItem->Text = L"Играть";
+			this->playToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::playButton_Click);
+			// 
+			// pauseToolStripMenuItem
+			// 
+			this->pauseToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pauseToolStripMenuItem.Image")));
+			this->pauseToolStripMenuItem->Name = L"pauseToolStripMenuItem";
+			this->pauseToolStripMenuItem->Size = System::Drawing::Size(310, 22);
+			this->pauseToolStripMenuItem->Text = L"Пауза";
+			this->pauseToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::pauseButton_Click);
+			// 
+			// playNextToolStripMenuItem
+			// 
+			this->playNextToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"playNextToolStripMenuItem.Image")));
+			this->playNextToolStripMenuItem->Name = L"playNextToolStripMenuItem";
+			this->playNextToolStripMenuItem->Size = System::Drawing::Size(310, 22);
+			this->playNextToolStripMenuItem->Text = L"Следующая песня";
+			this->playNextToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::nextButton_Click);
+			// 
+			// playPrevToolStripMenuItem
+			// 
+			this->playPrevToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"playPrevToolStripMenuItem.Image")));
+			this->playPrevToolStripMenuItem->Name = L"playPrevToolStripMenuItem";
+			this->playPrevToolStripMenuItem->Size = System::Drawing::Size(310, 22);
+			this->playPrevToolStripMenuItem->Text = L"Предыдущая песня";
+			this->playPrevToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::prevButton_Click);
+			// 
+			// closeToolStripMenuItem
+			// 
+			this->closeToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"closeToolStripMenuItem.Image")));
+			this->closeToolStripMenuItem->Margin = System::Windows::Forms::Padding(0, 0, 0, 10);
+			this->closeToolStripMenuItem->Name = L"closeToolStripMenuItem";
+			this->closeToolStripMenuItem->Size = System::Drawing::Size(310, 22);
+			this->closeToolStripMenuItem->Text = L"Закрыть меню";
+			this->closeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::closeToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this->toolStripSeparator2->Margin = System::Windows::Forms::Padding(0, 5, 0, 5);
+			this->toolStripSeparator2->Name = L"toolStripSeparator2";
+			this->toolStripSeparator2->Size = System::Drawing::Size(307, 6);
 			// 
 			// MainForm
 			// 
@@ -1012,5 +1032,7 @@ namespace SoundPlayer {
 	private: System::Void editPlaylistButton_Click(System::Object^ sender, System::EventArgs^ e);
 
 	private: System::Void aboutToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+
+	private: System::Void closeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }
