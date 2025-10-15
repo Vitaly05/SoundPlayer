@@ -86,7 +86,7 @@ namespace SoundPlayer {
 
 
 
-
+	private: int playlistsCount = 0;
 	private: bool isProgrammaticTrackChange = false;
 	private: System::Windows::Forms::OpenFileDialog^ addMusicFileDialog;
 

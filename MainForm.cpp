@@ -97,6 +97,8 @@ void MainForm::scanMusicAndAddButtons() {
 void MainForm::scanPlaylistsAndAddButtons() {
 	auto playlists = DirectoryHelper::getAllPlaylists();
 
+	this->playlistsCount = playlists->Count;
+
 	if (playlists->Count == 0) {
 		this->playlistsPage->Controls->Add(this->playlistsPageEmptyLabel);
 
@@ -395,6 +397,8 @@ System::Void MainForm::openToolStripMenuItem_Click(System::Object^ sender, Syste
 System::Void MainForm::createPlaylistStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	CreatePlaylistForm^ form = gcnew CreatePlaylistForm();
 	form->ShowDialog();
+
+	this->scanPlaylistsAndAddButtons();
 }
 
 System::Void MainForm::deletePlaylistButton_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -413,6 +417,10 @@ System::Void MainForm::deletePlaylistButton_Click(System::Object^ sender, System
 
 		button->Parent->Visible = false;
 
-		this->playlistsPage->Controls->Add(this->playlistsPageEmptyLabel);
+		this->playlistsCount -= 1;
+
+		if (this->playlistsCount == 0) {
+			this->playlistsPage->Controls->Add(this->playlistsPageEmptyLabel);
+		}
 	}
 }
