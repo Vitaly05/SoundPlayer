@@ -597,13 +597,14 @@ namespace SoundPlayer {
 			// 
 			// playlistsPage
 			// 
+			this->playlistsPage->AutoScroll = true;
 			this->playlistsPage->Controls->Add(this->label1);
 			this->playlistsPage->Controls->Add(this->playlistGroup);
 			this->playlistsPage->Controls->Add(this->playlistsPageEmptyLabel);
 			this->playlistsPage->Location = System::Drawing::Point(4, 22);
 			this->playlistsPage->Name = L"playlistsPage";
 			this->playlistsPage->Padding = System::Windows::Forms::Padding(3);
-			this->playlistsPage->Size = System::Drawing::Size(269, 547);
+			this->playlistsPage->Size = System::Drawing::Size(311, 547);
 			this->playlistsPage->TabIndex = 1;
 			this->playlistsPage->Text = L"Плейлисты";
 			this->playlistsPage->UseVisualStyleBackColor = true;
@@ -634,7 +635,7 @@ namespace SoundPlayer {
 			this->playlistGroup->Name = L"playlistGroup";
 			this->playlistGroup->RowCount = 1;
 			this->playlistGroup->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 100)));
-			this->playlistGroup->Size = System::Drawing::Size(263, 39);
+			this->playlistGroup->Size = System::Drawing::Size(305, 39);
 			this->playlistGroup->TabIndex = 3;
 			this->playlistGroup->Visible = false;
 			// 
@@ -644,10 +645,10 @@ namespace SoundPlayer {
 			this->deletePlaylistButton->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->deletePlaylistButton->ImageKey = L"trash.png";
 			this->deletePlaylistButton->ImageList = this->iconsImageList;
-			this->deletePlaylistButton->Location = System::Drawing::Point(223, 3);
+			this->deletePlaylistButton->Location = System::Drawing::Point(258, 3);
 			this->deletePlaylistButton->Margin = System::Windows::Forms::Padding(0, 3, 3, 3);
 			this->deletePlaylistButton->Name = L"deletePlaylistButton";
-			this->deletePlaylistButton->Size = System::Drawing::Size(37, 33);
+			this->deletePlaylistButton->Size = System::Drawing::Size(44, 33);
 			this->deletePlaylistButton->TabIndex = 2;
 			this->deletePlaylistButton->UseVisualStyleBackColor = true;
 			// 
@@ -658,7 +659,7 @@ namespace SoundPlayer {
 			this->playlistButton->Location = System::Drawing::Point(3, 3);
 			this->playlistButton->Margin = System::Windows::Forms::Padding(3, 3, 0, 3);
 			this->playlistButton->Name = L"playlistButton";
-			this->playlistButton->Size = System::Drawing::Size(181, 33);
+			this->playlistButton->Size = System::Drawing::Size(210, 33);
 			this->playlistButton->TabIndex = 0;
 			this->playlistButton->Text = L"Template";
 			this->playlistButton->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
@@ -670,10 +671,10 @@ namespace SoundPlayer {
 			this->editPlaylistButton->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->editPlaylistButton->ImageKey = L"edit.png";
 			this->editPlaylistButton->ImageList = this->iconsImageList;
-			this->editPlaylistButton->Location = System::Drawing::Point(184, 3);
+			this->editPlaylistButton->Location = System::Drawing::Point(213, 3);
 			this->editPlaylistButton->Margin = System::Windows::Forms::Padding(0, 3, 0, 3);
 			this->editPlaylistButton->Name = L"editPlaylistButton";
-			this->editPlaylistButton->Size = System::Drawing::Size(39, 33);
+			this->editPlaylistButton->Size = System::Drawing::Size(45, 33);
 			this->editPlaylistButton->TabIndex = 1;
 			this->editPlaylistButton->UseVisualStyleBackColor = true;
 			// 
@@ -684,17 +685,18 @@ namespace SoundPlayer {
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
 			this->playlistsPageEmptyLabel->Location = System::Drawing::Point(3, 3);
 			this->playlistsPageEmptyLabel->Name = L"playlistsPageEmptyLabel";
-			this->playlistsPageEmptyLabel->Size = System::Drawing::Size(263, 72);
+			this->playlistsPageEmptyLabel->Size = System::Drawing::Size(305, 72);
 			this->playlistsPageEmptyLabel->TabIndex = 2;
 			this->playlistsPageEmptyLabel->Text = L"Создайте плейлист\r\n\r\n(Плейлист -> Создать)";
 			this->playlistsPageEmptyLabel->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// selectedPlaylistPage
 			// 
+			this->selectedPlaylistPage->AutoScroll = true;
 			this->selectedPlaylistPage->Controls->Add(this->selectedPlaylistEmptyLabel);
 			this->selectedPlaylistPage->Location = System::Drawing::Point(4, 22);
 			this->selectedPlaylistPage->Name = L"selectedPlaylistPage";
-			this->selectedPlaylistPage->Size = System::Drawing::Size(269, 547);
+			this->selectedPlaylistPage->Size = System::Drawing::Size(311, 547);
 			this->selectedPlaylistPage->TabIndex = 2;
 			this->selectedPlaylistPage->Text = L"Выберите плейлист";
 			this->selectedPlaylistPage->UseVisualStyleBackColor = true;
@@ -706,7 +708,7 @@ namespace SoundPlayer {
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
 			this->selectedPlaylistEmptyLabel->Location = System::Drawing::Point(0, 0);
 			this->selectedPlaylistEmptyLabel->Name = L"selectedPlaylistEmptyLabel";
-			this->selectedPlaylistEmptyLabel->Size = System::Drawing::Size(269, 72);
+			this->selectedPlaylistEmptyLabel->Size = System::Drawing::Size(311, 72);
 			this->selectedPlaylistEmptyLabel->TabIndex = 3;
 			this->selectedPlaylistEmptyLabel->Text = L"В этом плейлисте нет песен";
 			this->selectedPlaylistEmptyLabel->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
