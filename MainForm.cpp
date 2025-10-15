@@ -32,6 +32,8 @@ void MainForm::setMusicInfo() {
 	this->musicName->Text = StringHelper::toSystemString(currentMusic->name);
 	this->musicArtist->Text = StringHelper::toSystemString(currentMusic->artist);
 
+	this->toolStripMusicName->Text = StringHelper::toSystemString(currentMusic->name);
+
 	this->setMusicCover();
 }
 
@@ -44,6 +46,7 @@ void MainForm::setDefaultMusicInfo() {
 	this->musicTimer->Stop();
 
 	this->musicName->Text = "Выберите музыку";
+	this->toolStripMusicName->Text = "Выберите музыку";
 	this->musicArtist->Text = "-";
 
 	this->musicPictureBox->Image = this->defaultMusicImage;
