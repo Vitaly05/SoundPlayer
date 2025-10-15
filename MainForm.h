@@ -105,6 +105,9 @@ namespace SoundPlayer {
 	private: System::Windows::Forms::TabPage^ selectedPlaylistPage;
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Label^ selectedPlaylistEmptyLabel;
+	private: System::Windows::Forms::ToolStripMenuItem^ aboutToolStripMenuItem;
+
+
 
 
 
@@ -136,6 +139,7 @@ namespace SoundPlayer {
 			this->addMusicStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->playlistToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->createPlaylistStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->aboutToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->tableLayoutPanel1 = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->tableLayoutPanel2 = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->prevButton = (gcnew System::Windows::Forms::Button());
@@ -202,9 +206,9 @@ namespace SoundPlayer {
 			// 
 			// menuStrip1
 			// 
-			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
 				this->fileToolStripMenuItem,
-					this->playlistToolStripMenuItem
+					this->playlistToolStripMenuItem, this->aboutToolStripMenuItem
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
@@ -222,7 +226,7 @@ namespace SoundPlayer {
 			// addMusicStripMenuItem
 			// 
 			this->addMusicStripMenuItem->Name = L"addMusicStripMenuItem";
-			this->addMusicStripMenuItem->Size = System::Drawing::Size(126, 22);
+			this->addMusicStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->addMusicStripMenuItem->Text = L"Добавить";
 			this->addMusicStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::openToolStripMenuItem_Click);
 			// 
@@ -236,9 +240,16 @@ namespace SoundPlayer {
 			// createPlaylistStripMenuItem
 			// 
 			this->createPlaylistStripMenuItem->Name = L"createPlaylistStripMenuItem";
-			this->createPlaylistStripMenuItem->Size = System::Drawing::Size(117, 22);
+			this->createPlaylistStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->createPlaylistStripMenuItem->Text = L"Создать";
 			this->createPlaylistStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::createPlaylistStripMenuItem_Click);
+			// 
+			// aboutToolStripMenuItem
+			// 
+			this->aboutToolStripMenuItem->Name = L"aboutToolStripMenuItem";
+			this->aboutToolStripMenuItem->Size = System::Drawing::Size(94, 20);
+			this->aboutToolStripMenuItem->Text = L"О программе";
+			this->aboutToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::aboutToolStripMenuItem_Click);
 			// 
 			// tableLayoutPanel1
 			// 
@@ -903,5 +914,7 @@ namespace SoundPlayer {
 	private: System::Void playlistButton_Click(System::Object^ sender, System::EventArgs^ e);
 
 	private: System::Void editPlaylistButton_Click(System::Object^ sender, System::EventArgs^ e);
+
+	private: System::Void aboutToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

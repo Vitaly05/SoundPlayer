@@ -502,3 +502,14 @@ System::Void MainForm::editPlaylistButton_Click(System::Object^ sender, System::
 
 	this->scanPlaylistsAndAddButtons();
 }
+
+System::Void MainForm::aboutToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	MessageBox::Show(
+		"Данная программа была разработана в рамках курсовой работы студента БГУИР факультета компьютерного проектирования группы 410972 Лозюка Виталия Александровича."
+		+ "\n\nДанная программа представляет собой средство для воспроизведения музыки. В ней вы можете добавлять музыку, создавать из них плейлисты и слушать."
+		+ "\n\nПо всем вопросам можете писать на почту разработчика (vitalik050405@gmail.com).",
+		"О программе",
+		MessageBoxButtons::OK,
+		MessageBoxIcon::Information
+	);
+}
