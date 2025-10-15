@@ -12,13 +12,14 @@ namespace SoundPlayer {
 		[JsonProperty("name")]
 		String^ name;
 
+		[JsonProperty("path")]
+		String^ path;
+
 		[JsonProperty("musicPathes")]
 		List<String^>^ musicPathes;
 
 	public:
-		PlaylistInfo(String^ name, List<String^>^ musicPathes) {
-			this->name = name;
-			this->musicPathes = musicPathes;
-		}
+		PlaylistInfo(String^ name, List<String^>^ musicPathes);
+		void Delete();
 	};
 }

@@ -94,6 +94,22 @@ void MainForm::scanMusicAndAddButtons() {
 	} while (music != this->playlist->firstMusic);
 }
 
+void MainForm::scanPlaylistsAndAddButtons() {
+	auto playlists = DirectoryHelper::getAllPlaylists();
+
+	if (playlists->Count == 0) {
+		this->playlistsPage->Controls->Add(this->playlistsPageEmptyLabel);
+
+		return;
+	}
+
+	this->playlistsPage->Controls->Clear();
+
+	for each (auto playlist in playlists) {
+		this->addPlaylistButton(playlist);
+	}
+}
+
 System::Void MainForm::playButton_Click(System::Object^ sender, System::EventArgs^ e) {
 	bool res = this->playlist->play();
 
@@ -186,12 +202,13 @@ System::Void MainForm::MainForm_Load(System::Object^ sender, System::EventArgs^ 
 	this->defaultMusicImage = this->musicPictureBox->Image;
 
 	this->scanMusicAndAddButtons();
+	this->scanPlaylistsAndAddButtons();
 }
 
 System::Windows::Forms::TableLayoutPanel^ MainForm::createMusicButton(std::string text, std::string path, PlaylistNode* node) {
-	auto newMusicButtonTableLayoutPanel = (gcnew System::Windows::Forms::TableLayoutPanel());
-	auto newMusicButton = (gcnew System::Windows::Forms::Button());
-	auto newDeleteMusicButton = (gcnew System::Windows::Forms::Button());
+	auto newMusicButtonTableLayoutPanel = (gcnew TableLayoutPanel());
+	auto newMusicButton = (gcnew Button());
+	auto newDeleteMusicButton = (gcnew Button());
 
 	newMusicButtonTableLayoutPanel->ColumnCount = 2;
 	newMusicButtonTableLayoutPanel->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
@@ -218,6 +235,7 @@ System::Windows::Forms::TableLayoutPanel^ MainForm::createMusicButton(std::strin
 	newMusicButton->UseVisualStyleBackColor = true;
 	newMusicButton->Click += gcnew System::EventHandler(this, &MainForm::musicButton_Click);
 	newMusicButton->Tag = IntPtr(node);
+	this->toolTip->SetToolTip(newMusicButton, StringHelper::toSystemString(text));
 
 	newDeleteMusicButton->Cursor = System::Windows::Forms::Cursors::Hand;
 	newDeleteMusicButton->Dock = System::Windows::Forms::DockStyle::Fill;
@@ -230,15 +248,84 @@ System::Windows::Forms::TableLayoutPanel^ MainForm::createMusicButton(std::strin
 	newDeleteMusicButton->UseVisualStyleBackColor = true;
 	newDeleteMusicButton->Click += gcnew System::EventHandler(this, &MainForm::DeleteMusicButton_Click);
 	newDeleteMusicButton->Tag = IntPtr(node);
+	this->toolTip->SetToolTip(newDeleteMusicButton, StringHelper::toSystemString(text));
 
 	return newMusicButtonTableLayoutPanel;
+}
+
+System::Windows::Forms::TableLayoutPanel^ MainForm::createPlaylistButton(PlaylistInfo^ playlistInfo) {
+	auto newPlaylistGroup = (gcnew TableLayoutPanel());
+	auto newPlaylistButton = (gcnew Button());
+	auto newPlaylistEditButton = (gcnew Button());
+	auto newPlaylistDeleteButton = (gcnew Button());
+
+	newPlaylistGroup->ColumnCount = 3;
+	newPlaylistGroup->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+		70)));
+	newPlaylistGroup->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+		15)));
+	newPlaylistGroup->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+		15)));
+	newPlaylistGroup->Controls->Add(newPlaylistButton, 0, 0);
+	newPlaylistGroup->Controls->Add(newPlaylistEditButton, 1, 0);
+	newPlaylistGroup->Controls->Add(newPlaylistDeleteButton, 2, 0);
+	newPlaylistGroup->Dock = System::Windows::Forms::DockStyle::Top;
+	newPlaylistGroup->Location = System::Drawing::Point(3, 75);
+	newPlaylistGroup->RowCount = 1;
+	newPlaylistGroup->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 100)));
+	newPlaylistGroup->Size = System::Drawing::Size(263, 39);
+	newPlaylistGroup->Name = L"playlistGroup_" + DirectoryHelper::makeSafeFileName(playlistInfo->name);
+
+	newPlaylistButton->Cursor = System::Windows::Forms::Cursors::Hand;
+	newPlaylistButton->Dock = System::Windows::Forms::DockStyle::Fill;
+	newPlaylistButton->Location = System::Drawing::Point(3, 3);
+	newPlaylistButton->Margin = System::Windows::Forms::Padding(3, 3, 0, 3);
+	newPlaylistButton->Size = System::Drawing::Size(181, 33);
+	newPlaylistButton->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+	newPlaylistButton->UseVisualStyleBackColor = true;
+	newPlaylistButton->Name = L"playlistButton_" + DirectoryHelper::makeSafeFileName(playlistInfo->name);
+	newPlaylistButton->Text = playlistInfo->name;
+	newPlaylistButton->Tag = playlistInfo;
+	this->toolTip->SetToolTip(newPlaylistButton, playlistInfo->name);
+	
+	newPlaylistEditButton->Cursor = System::Windows::Forms::Cursors::Hand;
+	newPlaylistEditButton->Dock = System::Windows::Forms::DockStyle::Fill;
+	newPlaylistEditButton->ImageKey = L"edit.png";
+	newPlaylistEditButton->ImageList = this->iconsImageList;
+	newPlaylistEditButton->Location = System::Drawing::Point(184, 3);
+	newPlaylistEditButton->Margin = System::Windows::Forms::Padding(0, 3, 0, 3);
+	newPlaylistEditButton->Size = System::Drawing::Size(39, 33);
+	newPlaylistEditButton->UseVisualStyleBackColor = true;
+	newPlaylistEditButton->Name = L"editPlaylistButton_" + DirectoryHelper::makeSafeFileName(playlistInfo->name);
+	newPlaylistEditButton->Tag = playlistInfo;
+	this->toolTip->SetToolTip(newPlaylistEditButton, playlistInfo->name);
+	
+	newPlaylistDeleteButton->Cursor = System::Windows::Forms::Cursors::Hand;
+	newPlaylistDeleteButton->Dock = System::Windows::Forms::DockStyle::Fill;
+	newPlaylistDeleteButton->ImageKey = L"trash.png";
+	newPlaylistDeleteButton->ImageList = this->iconsImageList;
+	newPlaylistDeleteButton->Location = System::Drawing::Point(223, 3);
+	newPlaylistDeleteButton->Margin = System::Windows::Forms::Padding(0, 3, 3, 3);
+	newPlaylistDeleteButton->Size = System::Drawing::Size(37, 33);
+	newPlaylistDeleteButton->UseVisualStyleBackColor = true;
+	newPlaylistDeleteButton->Name = L"deletePlaylistButton_" + DirectoryHelper::makeSafeFileName(playlistInfo->name);
+	newPlaylistDeleteButton->Tag = playlistInfo;
+	newPlaylistDeleteButton->Click += gcnew EventHandler(this, &MainForm::deletePlaylistButton_Click);
+	this->toolTip->SetToolTip(newPlaylistDeleteButton, playlistInfo->name);
+
+	return newPlaylistGroup;
 }
 
 System::Void MainForm::addMusicButton(std::string text, std::string path, PlaylistNode* node) {
 	auto musicButton = this->createMusicButton(text, path, node);
 
 	this->allMusicPage->Controls->Add(musicButton);
-	this->toolTip->SetToolTip(musicButton, StringHelper::toSystemString(text));
+}
+
+System::Void MainForm::addPlaylistButton(PlaylistInfo^ playlistInfo) {
+	auto playlistGroup = this->createPlaylistButton(playlistInfo);
+
+	this->playlistsPage->Controls->Add(playlistGroup);
 }
 
 System::Void MainForm::musicButton_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -297,4 +384,22 @@ System::Void MainForm::openToolStripMenuItem_Click(System::Object^ sender, Syste
 System::Void MainForm::createPlaylistStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	CreatePlaylistForm^ form = gcnew CreatePlaylistForm();
 	form->ShowDialog();
+}
+
+System::Void MainForm::deletePlaylistButton_Click(System::Object^ sender, System::EventArgs^ e) {
+	Button^ button = safe_cast<Button^>(sender);
+	PlaylistInfo^ playlistInfo = safe_cast<PlaylistInfo^>(button->Tag);
+
+	auto res = MessageBox::Show(
+		"Вы уверены, что хотите удалить плейлист \"" + playlistInfo->name + "\"?",
+		"Подтверждение",
+		MessageBoxButtons::YesNo,
+		MessageBoxIcon::Question
+	);
+
+	if (res == System::Windows::Forms::DialogResult::Yes) {
+		playlistInfo->Delete();
+
+		button->Parent->Visible = false;
+	}
 }

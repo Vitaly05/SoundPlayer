@@ -32,15 +32,19 @@ void DirectoryHelper::deleteMusic(std::string path) {
 }
 
 void DirectoryHelper::savePlaylist(PlaylistInfo^ playlistInfo) {
-	String^ json = JsonConvert::SerializeObject(playlistInfo, Formatting::None);
-
 	Directory::CreateDirectory(StringHelper::toSystemString(DirectoryHelper::playlistsFolderPath));
 
+	auto path = Path::Combine(
+		StringHelper::toSystemString(DirectoryHelper::playlistsFolderPath),
+		DirectoryHelper::makeSafeFileName(playlistInfo->name) + StringHelper::toSystemString(DirectoryHelper::playlistFileExt)
+	);
+
+	playlistInfo->path = path;
+
+	String^ json = JsonConvert::SerializeObject(playlistInfo, Formatting::None);
+
 	File::WriteAllText(
-		Path::Combine(
-			StringHelper::toSystemString(DirectoryHelper::playlistsFolderPath),
-			DirectoryHelper::makeSafeFileName(playlistInfo->name) + ".json"
-		),
+		path,
 		json
 	);
 }
@@ -53,4 +57,33 @@ String^ DirectoryHelper::makeSafeFileName(String^ name) {
 	safeName = safeName->Replace(" ", "_");
 
 	return safeName;
+}
+
+List<PlaylistInfo^>^ DirectoryHelper::getAllPlaylists() {
+	List<PlaylistInfo^>^ playlists = gcnew List<PlaylistInfo^>();
+
+	try {
+		for (const auto& entry : fs::directory_iterator(DirectoryHelper::playlistsFolderPath)) {
+			std::string ext = entry.path().extension().string();
+
+			if (entry.is_regular_file() && ext == DirectoryHelper::playlistFileExt) {
+				auto path = StringHelper::toSystemString(entry.path().string());
+				auto data = File::ReadAllText(path);
+
+				PlaylistInfo^ playlist = JsonConvert::DeserializeObject<PlaylistInfo^>(data);
+				playlists->Add(playlist);
+			}
+		}
+	}
+	catch (const fs::filesystem_error& e) {
+		std::cerr << "Error: " << e.what() << '\n';
+
+		return gcnew List<PlaylistInfo^>();
+	}
+
+	return playlists;
+}
+
+void DirectoryHelper::deleteFile(String^ path) {
+	File::Delete(path);
 }

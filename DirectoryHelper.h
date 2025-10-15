@@ -19,12 +19,15 @@ static class DirectoryHelper {
 public:
 	static inline std::string musicFolderPath = "./music";
 	static inline std::string playlistsFolderPath = "./playlists";
+	static inline std::string playlistFileExt = ".json";
 
 public:
 	static std::vector<fs::path> getMusicPathesArray();
-	static void addMusic(System::String^ path);
+	static void addMusic(String^ path);
 	static void deleteMusic(std::string path);
 	static void savePlaylist(PlaylistInfo^ playlistInfo);
 	static String^ makeSafeFileName(String^ name);
+	static List<PlaylistInfo^>^ getAllPlaylists();
+	static void deleteFile(String^ path);
 };
 
