@@ -401,5 +401,7 @@ System::Void MainForm::deletePlaylistButton_Click(System::Object^ sender, System
 		playlistInfo->Delete();
 
 		button->Parent->Visible = false;
+
+		this->playlistsPage->Controls->Add(this->playlistsPageEmptyLabel);
 	}
 }
