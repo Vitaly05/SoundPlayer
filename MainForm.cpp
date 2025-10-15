@@ -157,6 +157,14 @@ System::Void MainForm::musicTimer_Tick(System::Object^ sender, System::EventArgs
 
 	this->isProgrammaticTrackChange = true;
 	this->musicProgressBar->Value = offset;
+
+	if (this->musicWrapper->getStatus() == sf::SoundSource::Stopped && offset == 0) {
+		bool res = this->playlist->playNext();
+
+		if (res) {
+			this->setMusicInfo();
+		}
+	}
 }
 
 System::Void MainForm::musicProgressBar_ValueChanged(System::Object^ sender, System::EventArgs^ e) {

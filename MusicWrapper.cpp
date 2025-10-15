@@ -61,3 +61,7 @@ void MusicWrapper::setVolume(float volume) {
 void MusicWrapper::setPitch(float pitch) {
 	this->music.setPitch(pitch);
 }
+
+sf::SoundSource::Status MusicWrapper::getStatus() {
+	return this->music.getStatus();
+}

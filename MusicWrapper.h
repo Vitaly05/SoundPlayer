@@ -18,5 +18,6 @@ public:
 	sf::Time getPlayingOffset();
 	void setVolume(float volume);
 	void setPitch(float pitch);
+	sf::SoundSource::Status getStatus();
 };
 
