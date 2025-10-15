@@ -103,6 +103,9 @@ namespace SoundPlayer {
 	private: System::Windows::Forms::Button^ playlistButton;
 	private: System::Windows::Forms::Button^ editPlaylistButton;
 	private: System::Windows::Forms::Button^ deletePlaylistButton;
+	private: System::Windows::Forms::TabPage^ selectedPlaylistPage;
+	private: System::Windows::Forms::Label^ label1;
+	private: System::Windows::Forms::Label^ selectedPlaylistEmptyLabel;
 
 
 
@@ -161,7 +164,11 @@ namespace SoundPlayer {
 			this->allPageEmptyLabel = (gcnew System::Windows::Forms::Label());
 			this->playlistsPage = (gcnew System::Windows::Forms::TabPage());
 			this->playlistGroup = (gcnew System::Windows::Forms::TableLayoutPanel());
+			this->deletePlaylistButton = (gcnew System::Windows::Forms::Button());
+			this->playlistButton = (gcnew System::Windows::Forms::Button());
+			this->editPlaylistButton = (gcnew System::Windows::Forms::Button());
 			this->playlistsPageEmptyLabel = (gcnew System::Windows::Forms::Label());
+			this->selectedPlaylistPage = (gcnew System::Windows::Forms::TabPage());
 			this->tableLayoutPanel6 = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->musicPictureBox = (gcnew System::Windows::Forms::PictureBox());
 			this->tableLayoutPanel7 = (gcnew System::Windows::Forms::TableLayoutPanel());
@@ -170,9 +177,8 @@ namespace SoundPlayer {
 			this->musicTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->toolTip = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->addMusicFileDialog = (gcnew System::Windows::Forms::OpenFileDialog());
-			this->playlistButton = (gcnew System::Windows::Forms::Button());
-			this->editPlaylistButton = (gcnew System::Windows::Forms::Button());
-			this->deletePlaylistButton = (gcnew System::Windows::Forms::Button());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->selectedPlaylistEmptyLabel = (gcnew System::Windows::Forms::Label());
 			this->menuStrip1->SuspendLayout();
 			this->tableLayoutPanel1->SuspendLayout();
 			this->tableLayoutPanel2->SuspendLayout();
@@ -189,6 +195,7 @@ namespace SoundPlayer {
 			this->musicButtonTableLayoutPanel->SuspendLayout();
 			this->playlistsPage->SuspendLayout();
 			this->playlistGroup->SuspendLayout();
+			this->selectedPlaylistPage->SuspendLayout();
 			this->tableLayoutPanel6->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->musicPictureBox))->BeginInit();
 			this->tableLayoutPanel7->SuspendLayout();
@@ -512,6 +519,7 @@ namespace SoundPlayer {
 			// 
 			this->musicTabPanel->Controls->Add(this->allMusicPage);
 			this->musicTabPanel->Controls->Add(this->playlistsPage);
+			this->musicTabPanel->Controls->Add(this->selectedPlaylistPage);
 			this->musicTabPanel->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->musicTabPanel->Location = System::Drawing::Point(689, 3);
 			this->musicTabPanel->Name = L"musicTabPanel";
@@ -590,6 +598,7 @@ namespace SoundPlayer {
 			// 
 			// playlistsPage
 			// 
+			this->playlistsPage->Controls->Add(this->label1);
 			this->playlistsPage->Controls->Add(this->playlistGroup);
 			this->playlistsPage->Controls->Add(this->playlistsPageEmptyLabel);
 			this->playlistsPage->Location = System::Drawing::Point(4, 22);
@@ -621,6 +630,45 @@ namespace SoundPlayer {
 			this->playlistGroup->TabIndex = 3;
 			this->playlistGroup->Visible = false;
 			// 
+			// deletePlaylistButton
+			// 
+			this->deletePlaylistButton->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->deletePlaylistButton->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->deletePlaylistButton->ImageKey = L"trash.png";
+			this->deletePlaylistButton->ImageList = this->iconsImageList;
+			this->deletePlaylistButton->Location = System::Drawing::Point(223, 3);
+			this->deletePlaylistButton->Margin = System::Windows::Forms::Padding(0, 3, 3, 3);
+			this->deletePlaylistButton->Name = L"deletePlaylistButton";
+			this->deletePlaylistButton->Size = System::Drawing::Size(37, 33);
+			this->deletePlaylistButton->TabIndex = 2;
+			this->deletePlaylistButton->UseVisualStyleBackColor = true;
+			// 
+			// playlistButton
+			// 
+			this->playlistButton->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->playlistButton->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->playlistButton->Location = System::Drawing::Point(3, 3);
+			this->playlistButton->Margin = System::Windows::Forms::Padding(3, 3, 0, 3);
+			this->playlistButton->Name = L"playlistButton";
+			this->playlistButton->Size = System::Drawing::Size(181, 33);
+			this->playlistButton->TabIndex = 0;
+			this->playlistButton->Text = L"Template";
+			this->playlistButton->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->playlistButton->UseVisualStyleBackColor = true;
+			// 
+			// editPlaylistButton
+			// 
+			this->editPlaylistButton->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->editPlaylistButton->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->editPlaylistButton->ImageKey = L"edit.png";
+			this->editPlaylistButton->ImageList = this->iconsImageList;
+			this->editPlaylistButton->Location = System::Drawing::Point(184, 3);
+			this->editPlaylistButton->Margin = System::Windows::Forms::Padding(0, 3, 0, 3);
+			this->editPlaylistButton->Name = L"editPlaylistButton";
+			this->editPlaylistButton->Size = System::Drawing::Size(39, 33);
+			this->editPlaylistButton->TabIndex = 1;
+			this->editPlaylistButton->UseVisualStyleBackColor = true;
+			// 
 			// playlistsPageEmptyLabel
 			// 
 			this->playlistsPageEmptyLabel->Dock = System::Windows::Forms::DockStyle::Top;
@@ -632,6 +680,16 @@ namespace SoundPlayer {
 			this->playlistsPageEmptyLabel->TabIndex = 2;
 			this->playlistsPageEmptyLabel->Text = L"Создайте плейлист\r\n\r\n(Плейлист -> Создать)";
 			this->playlistsPageEmptyLabel->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// selectedPlaylistPage
+			// 
+			this->selectedPlaylistPage->Controls->Add(this->selectedPlaylistEmptyLabel);
+			this->selectedPlaylistPage->Location = System::Drawing::Point(4, 22);
+			this->selectedPlaylistPage->Name = L"selectedPlaylistPage";
+			this->selectedPlaylistPage->Size = System::Drawing::Size(269, 547);
+			this->selectedPlaylistPage->TabIndex = 2;
+			this->selectedPlaylistPage->Text = L"Выберите плейлист";
+			this->selectedPlaylistPage->UseVisualStyleBackColor = true;
 			// 
 			// tableLayoutPanel6
 			// 
@@ -717,44 +775,26 @@ namespace SoundPlayer {
 			this->addMusicFileDialog->Multiselect = true;
 			this->addMusicFileDialog->Title = L"Выберите музыкальные файлы для добавления";
 			// 
-			// playlistButton
+			// label1
 			// 
-			this->playlistButton->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->playlistButton->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->playlistButton->Location = System::Drawing::Point(3, 3);
-			this->playlistButton->Margin = System::Windows::Forms::Padding(3, 3, 0, 3);
-			this->playlistButton->Name = L"playlistButton";
-			this->playlistButton->Size = System::Drawing::Size(181, 33);
-			this->playlistButton->TabIndex = 0;
-			this->playlistButton->Text = L"Template";
-			this->playlistButton->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->playlistButton->UseVisualStyleBackColor = true;
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(93, 50);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(35, 13);
+			this->label1->TabIndex = 4;
+			this->label1->Text = L"label1";
 			// 
-			// editPlaylistButton
+			// selectedPlaylistEmptyLabel
 			// 
-			this->editPlaylistButton->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->editPlaylistButton->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->editPlaylistButton->ImageKey = L"edit.png";
-			this->editPlaylistButton->ImageList = this->iconsImageList;
-			this->editPlaylistButton->Location = System::Drawing::Point(184, 3);
-			this->editPlaylistButton->Margin = System::Windows::Forms::Padding(0, 3, 0, 3);
-			this->editPlaylistButton->Name = L"editPlaylistButton";
-			this->editPlaylistButton->Size = System::Drawing::Size(39, 33);
-			this->editPlaylistButton->TabIndex = 1;
-			this->editPlaylistButton->UseVisualStyleBackColor = true;
-			// 
-			// deletePlaylistButton
-			// 
-			this->deletePlaylistButton->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->deletePlaylistButton->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->deletePlaylistButton->ImageKey = L"trash.png";
-			this->deletePlaylistButton->ImageList = this->iconsImageList;
-			this->deletePlaylistButton->Location = System::Drawing::Point(223, 3);
-			this->deletePlaylistButton->Margin = System::Windows::Forms::Padding(0, 3, 3, 3);
-			this->deletePlaylistButton->Name = L"deletePlaylistButton";
-			this->deletePlaylistButton->Size = System::Drawing::Size(37, 33);
-			this->deletePlaylistButton->TabIndex = 2;
-			this->deletePlaylistButton->UseVisualStyleBackColor = true;
+			this->selectedPlaylistEmptyLabel->Dock = System::Windows::Forms::DockStyle::Top;
+			this->selectedPlaylistEmptyLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
+			this->selectedPlaylistEmptyLabel->Location = System::Drawing::Point(0, 0);
+			this->selectedPlaylistEmptyLabel->Name = L"selectedPlaylistEmptyLabel";
+			this->selectedPlaylistEmptyLabel->Size = System::Drawing::Size(269, 72);
+			this->selectedPlaylistEmptyLabel->TabIndex = 3;
+			this->selectedPlaylistEmptyLabel->Text = L"В этом плейлисте нет песен";
+			this->selectedPlaylistEmptyLabel->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// MainForm
 			// 
@@ -786,7 +826,9 @@ namespace SoundPlayer {
 			this->allMusicPage->ResumeLayout(false);
 			this->musicButtonTableLayoutPanel->ResumeLayout(false);
 			this->playlistsPage->ResumeLayout(false);
+			this->playlistsPage->PerformLayout();
 			this->playlistGroup->ResumeLayout(false);
+			this->selectedPlaylistPage->ResumeLayout(false);
 			this->tableLayoutPanel6->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->musicPictureBox))->EndInit();
 			this->tableLayoutPanel7->ResumeLayout(false);
@@ -811,13 +853,19 @@ namespace SoundPlayer {
 
 	private: void scanPlaylistsAndAddButtons();
 
+	private: void scanPlaylistAndAddMusicButtons(PlaylistInfo^ playlistInfo);
+
 	private: System::Windows::Forms::TableLayoutPanel^ createMusicButton(std::string text, std::string path, PlaylistNode* node);
 
 	private: System::Windows::Forms::TableLayoutPanel^ createPlaylistButton(PlaylistInfo^ playlistInfo);
 
+	private: System::Windows::Forms::Button^ createPlaylistMusicButton(PlaylistNode* node);
+
 	private: System::Void addMusicButton(std::string text, std::string path, PlaylistNode* node);
 
 	private: System::Void addPlaylistButton(PlaylistInfo^ playlistInfo);
+
+	private: System::Void addPlaylistMusicButton(PlaylistNode* node);
 
 	private: System::Void playButton_Click(System::Object^ sender, System::EventArgs^ e);
 
@@ -850,5 +898,7 @@ namespace SoundPlayer {
 	private: System::Void createPlaylistStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 
 	private: System::Void deletePlaylistButton_Click(System::Object^ sender, System::EventArgs^ e);
+
+	private: System::Void playlistButton_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

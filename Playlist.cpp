@@ -34,6 +34,41 @@ Playlist::Playlist(MusicWrapper* wrapper, std::vector<fs::path> musicPathes) {
 	this->firstMusic = firstNode;
 }
 
+Playlist::Playlist(MusicWrapper* wrapper, List<String^>^ musicPathes) {
+	this->musicWrapper = wrapper;
+
+	PlaylistNode* firstNode = nullptr;
+	PlaylistNode* prevNode = nullptr;
+
+	for each (auto path in musicPathes) {
+		fs::path fsPath = fs::path(StringHelper::toStdString(path));
+		auto node = new PlaylistNode(fsPath.string(), fsPath.filename().string(), this->musicWrapper);
+
+		if (!firstNode) {
+			node->next = node;
+			node->prev = node;
+
+			firstNode = node;
+		}
+
+		if (!prevNode) {
+			prevNode = node;
+		}
+		else {
+			node->prev = prevNode;
+			node->next = firstNode;
+
+			prevNode->next = node;
+			firstNode->prev = node;
+
+			prevNode = node;
+		}
+	}
+
+	this->currentMusic = firstNode;
+	this->firstMusic = firstNode;
+}
+
 bool Playlist::play() {
 	if (this && this->currentMusic) {
 		return this->currentMusic->play();

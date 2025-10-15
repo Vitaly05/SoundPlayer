@@ -29,5 +29,6 @@ public:
 	static String^ makeSafeFileName(String^ name);
 	static List<PlaylistInfo^>^ getAllPlaylists();
 	static void deleteFile(String^ path);
+	static std::vector<fs::path> getPlaylistMusicPathesArray(PlaylistInfo^ playlistInfo);
 };
 

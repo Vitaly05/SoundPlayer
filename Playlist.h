@@ -9,6 +9,8 @@
 
 namespace fs = std::filesystem;
 
+using namespace System::Collections::Generic;
+
 class Playlist {
 private:
 	MusicWrapper* musicWrapper = nullptr;
@@ -22,6 +24,7 @@ private:
 
 public:
 	Playlist(MusicWrapper* wrapper, std::vector<fs::path> musicPathes);
+	Playlist(MusicWrapper* wrapper, List<String^>^ musicPathes);
 	bool play();
 	bool play(PlaylistNode* music);
 	bool pause();

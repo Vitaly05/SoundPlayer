@@ -112,6 +112,28 @@ void MainForm::scanPlaylistsAndAddButtons() {
 	}
 }
 
+void MainForm::scanPlaylistAndAddMusicButtons(PlaylistInfo^ playlistInfo) {
+	auto musicPathes = DirectoryHelper::getPlaylistMusicPathesArray(playlistInfo);
+
+	if (musicPathes.size() == 0) {
+		this->selectedPlaylistPage->Controls->Add(this->selectedPlaylistEmptyLabel);
+
+		return;
+	}
+
+	this->playlist = new Playlist(this->musicWrapper, musicPathes);
+
+	PlaylistNode* music = this->playlist->firstMusic;
+
+	this->selectedPlaylistPage->Controls->Clear();
+
+	do {
+		addPlaylistMusicButton(music);
+
+		music = music->next;
+	} while (music != this->playlist->firstMusic);
+}
+
 System::Void MainForm::playButton_Click(System::Object^ sender, System::EventArgs^ e) {
 	bool res = this->playlist->play();
 
@@ -207,7 +229,7 @@ System::Void MainForm::MainForm_Load(System::Object^ sender, System::EventArgs^ 
 	this->scanPlaylistsAndAddButtons();
 }
 
-System::Windows::Forms::TableLayoutPanel^ MainForm::createMusicButton(std::string text, std::string path, PlaylistNode* node) {
+TableLayoutPanel^ MainForm::createMusicButton(std::string text, std::string path, PlaylistNode* node) {
 	auto newMusicButtonTableLayoutPanel = (gcnew TableLayoutPanel());
 	auto newMusicButton = (gcnew Button());
 	auto newDeleteMusicButton = (gcnew Button());
@@ -255,7 +277,7 @@ System::Windows::Forms::TableLayoutPanel^ MainForm::createMusicButton(std::strin
 	return newMusicButtonTableLayoutPanel;
 }
 
-System::Windows::Forms::TableLayoutPanel^ MainForm::createPlaylistButton(PlaylistInfo^ playlistInfo) {
+TableLayoutPanel^ MainForm::createPlaylistButton(PlaylistInfo^ playlistInfo) {
 	auto newPlaylistGroup = (gcnew TableLayoutPanel());
 	auto newPlaylistButton = (gcnew Button());
 	auto newPlaylistEditButton = (gcnew Button());
@@ -288,6 +310,7 @@ System::Windows::Forms::TableLayoutPanel^ MainForm::createPlaylistButton(Playlis
 	newPlaylistButton->Name = L"playlistButton_" + DirectoryHelper::makeSafeFileName(playlistInfo->name);
 	newPlaylistButton->Text = playlistInfo->name;
 	newPlaylistButton->Tag = playlistInfo;
+	newPlaylistButton->Click += gcnew EventHandler(this, &MainForm::playlistButton_Click);
 	this->toolTip->SetToolTip(newPlaylistButton, playlistInfo->name);
 	
 	newPlaylistEditButton->Cursor = System::Windows::Forms::Cursors::Hand;
@@ -318,6 +341,25 @@ System::Windows::Forms::TableLayoutPanel^ MainForm::createPlaylistButton(Playlis
 	return newPlaylistGroup;
 }
 
+Button^ MainForm::createPlaylistMusicButton(PlaylistNode* node) {
+	auto newMusicButton = (gcnew Button());
+
+	newMusicButton->Cursor = System::Windows::Forms::Cursors::Hand;
+	newMusicButton->Dock = System::Windows::Forms::DockStyle::Top;
+	newMusicButton->Location = System::Drawing::Point(3, 3);
+	newMusicButton->Margin = System::Windows::Forms::Padding(3, 3, 0, 3);
+	newMusicButton->Name = L"musicButton-" + StringHelper::toSystemString(node->name);
+	newMusicButton->Size = System::Drawing::Size(220, 34);
+	newMusicButton->Text = StringHelper::toSystemString(node->name);
+	newMusicButton->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+	newMusicButton->UseVisualStyleBackColor = true;
+	newMusicButton->Click += gcnew System::EventHandler(this, &MainForm::musicButton_Click);
+	newMusicButton->Tag = IntPtr(node);
+	this->toolTip->SetToolTip(newMusicButton, StringHelper::toSystemString(node->name));
+
+	return newMusicButton;
+}
+
 System::Void MainForm::addMusicButton(std::string text, std::string path, PlaylistNode* node) {
 	auto musicButton = this->createMusicButton(text, path, node);
 
@@ -328,6 +370,12 @@ System::Void MainForm::addPlaylistButton(PlaylistInfo^ playlistInfo) {
 	auto playlistGroup = this->createPlaylistButton(playlistInfo);
 
 	this->playlistsPage->Controls->Add(playlistGroup);
+}
+
+System::Void MainForm::addPlaylistMusicButton(PlaylistNode* node) {
+	auto button = this->createPlaylistMusicButton(node);
+
+	this->selectedPlaylistPage->Controls->Add(button);
 }
 
 System::Void MainForm::musicButton_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -423,4 +471,15 @@ System::Void MainForm::deletePlaylistButton_Click(System::Object^ sender, System
 			this->playlistsPage->Controls->Add(this->playlistsPageEmptyLabel);
 		}
 	}
+}
+
+System::Void MainForm::playlistButton_Click(System::Object^ sender, System::EventArgs^ e) {
+	Button^ button = safe_cast<Button^>(sender);
+	PlaylistInfo^ playlistInfo = safe_cast<PlaylistInfo^>(button->Tag);
+
+	this->selectedPlaylistPage->Text = playlistInfo->name;
+
+	this->scanPlaylistAndAddMusicButtons(playlistInfo);
+
+	this->musicTabPanel->SelectedTab = this->selectedPlaylistPage;
 }

@@ -87,3 +87,23 @@ List<PlaylistInfo^>^ DirectoryHelper::getAllPlaylists() {
 void DirectoryHelper::deleteFile(String^ path) {
 	File::Delete(path);
 }
+
+std::vector<fs::path> DirectoryHelper::getPlaylistMusicPathesArray(PlaylistInfo^ playlistInfo) {
+	std::vector<fs::path> musicPathes;
+
+	try {
+		for each (auto path in playlistInfo->musicPathes) {
+			auto fsPath = fs::path(StringHelper::toStdString(path));
+			std::string ext = fsPath.extension().string();
+
+			if (std::regex_match(ext, std::regex(R"(.mp3|.ogg)"))) {
+				musicPathes.push_back(fsPath);
+			}
+		}
+	}
+	catch (const fs::filesystem_error& e) {
+		std::cerr << "Error: " << e.what() << '\n';
+	}
+
+	return musicPathes;
+}
