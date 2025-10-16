@@ -1,6 +1,6 @@
 #include "Playlist.h"
 
-Playlist::Playlist(MusicWrapper* wrapper, std::vector<fs::path> musicPathes) {
+Playlist::Playlist(MusicWrapper* wrapper, std::vector<fs::path> musicPathes, bool isRandomMode) {
 	this->musicWrapper = wrapper;
 
 	PlaylistNode* firstNode = nullptr;
@@ -32,9 +32,16 @@ Playlist::Playlist(MusicWrapper* wrapper, std::vector<fs::path> musicPathes) {
 
 	this->currentMusic = firstNode;
 	this->firstMusic = firstNode;
+
+	if (isRandomMode) {
+		this->initRandomOrder();
+
+		this->currentRandomIndex = 0;
+		this->isRandomMode = true;
+	}
 }
 
-Playlist::Playlist(MusicWrapper* wrapper, List<String^>^ musicPathes) {
+Playlist::Playlist(MusicWrapper* wrapper, List<String^>^ musicPathes, bool isRandomMode) {
 	this->musicWrapper = wrapper;
 
 	PlaylistNode* firstNode = nullptr;
@@ -67,6 +74,33 @@ Playlist::Playlist(MusicWrapper* wrapper, List<String^>^ musicPathes) {
 
 	this->currentMusic = firstNode;
 	this->firstMusic = firstNode;
+
+	if (isRandomMode) {
+		this->initRandomOrder();
+
+		this->currentRandomIndex = 0;
+		this->isRandomMode = true;
+	}
+}
+
+void Playlist::initRandomOrder() {
+	std::random_device rd;
+	std::mt19937 g(rd());
+
+	std::vector<int> arr;
+
+	PlaylistNode* current = this->currentMusic;
+	int i = 0;
+
+	do {
+		arr.push_back(i++);
+
+		current = current->next;
+	} while (current != this->currentMusic);
+
+	std::shuffle(arr.begin(), arr.end(), g);
+
+	this->randomOrder = arr;
 }
 
 bool Playlist::play() {
@@ -79,6 +113,9 @@ bool Playlist::play() {
 
 bool Playlist::play(PlaylistNode* music) {
 	this->currentMusic = music;
+	this->firstMusic = music;
+
+	this->initRandomOrder();
 
 	return this->currentMusic->play();
 }
@@ -96,7 +133,14 @@ bool Playlist::playNext() {
 		return false;
 	}
 
-	PlaylistNode* next = this->currentMusic->next;
+	PlaylistNode* next;
+
+	if (this->isRandomMode) {
+		next = this->getNextRandom();
+	}
+	else {
+		next = this->currentMusic->next;
+	}
 
 	if (!next) {
 		return false;
@@ -112,7 +156,14 @@ bool Playlist::playPrev() {
 		return false;
 	}
 
-	PlaylistNode* prev = this->currentMusic->prev;
+	PlaylistNode* prev;
+
+	if (this->isRandomMode) {
+		prev = this->getPrevRandom();
+	}
+	else {
+		prev = this->currentMusic->prev;
+	}
 
 	if (!prev) {
 		return false;
@@ -129,7 +180,6 @@ void Playlist::playAnotherMusic(PlaylistNode* music) {
 	music->play();
 	this->currentMusic = music;
 }
-
 
 bool Playlist::deleteNode(PlaylistNode* node) {
 	if (node == this->currentMusic) {
@@ -153,4 +203,52 @@ bool Playlist::deleteNode(PlaylistNode* node) {
 	}
 
 	return false;
+}
+
+bool Playlist::playInRandomOrder() {
+	this->initRandomOrder();
+
+	this->currentRandomIndex = 0;
+	this->isRandomMode = true;
+
+	return this->playNext();
+}
+
+void Playlist::playInDefaultOrder() {
+	this->isRandomMode = false;
+}
+
+PlaylistNode* Playlist::getNextRandom() {
+	PlaylistNode* next = this->firstMusic;
+
+	if (this->currentRandomIndex == this->randomOrder.size() - 1) {
+		this->currentRandomIndex = 0;
+	}
+	else {
+		this->currentRandomIndex++;
+	}
+
+	for (int i = 0; i < this->randomOrder[this->currentRandomIndex]; i++) {
+		next = next->next;
+	}
+
+	return next;
+}
+
+PlaylistNode* Playlist::getPrevRandom() {
+	PlaylistNode* prev = this->firstMusic;
+
+	if (this->currentRandomIndex == 0) {
+		this->currentRandomIndex = this->randomOrder.size() - 1;
+	}
+	else {
+		this->currentRandomIndex--;
+	}
+
+
+	for (int i = 0; i < this->randomOrder[this->currentRandomIndex]; i++) {
+		prev = prev->next;
+	}
+
+	return prev;
 }

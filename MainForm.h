@@ -84,7 +84,7 @@ namespace SoundPlayer {
 	private: System::Windows::Forms::Label^ musicArtist;
 
 
-
+	private: bool isShuffleSelected = false;
 	private: int playlistsCount = 0;
 	private: bool isProgrammaticTrackChange = false;
 	private: System::Windows::Forms::OpenFileDialog^ addMusicFileDialog;
@@ -116,6 +116,9 @@ namespace SoundPlayer {
 	private: System::Windows::Forms::ToolStripSeparator^ toolStripSeparator1;
 	private: System::Windows::Forms::ToolStripMenuItem^ closeToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripSeparator^ toolStripSeparator2;
+	private: System::Windows::Forms::Button^ shuffleButton;
+	private: System::Windows::Forms::ToolStripMenuItem^ shuffleToolStripMenuItem;
+
 
 
 
@@ -161,8 +164,9 @@ namespace SoundPlayer {
 			this->aboutToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->tableLayoutPanel1 = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->tableLayoutPanel2 = (gcnew System::Windows::Forms::TableLayoutPanel());
-			this->prevButton = (gcnew System::Windows::Forms::Button());
+			this->shuffleButton = (gcnew System::Windows::Forms::Button());
 			this->iconsImageList = (gcnew System::Windows::Forms::ImageList(this->components));
+			this->prevButton = (gcnew System::Windows::Forms::Button());
 			this->nextButton = (gcnew System::Windows::Forms::Button());
 			this->pauseButton = (gcnew System::Windows::Forms::Button());
 			this->playButton = (gcnew System::Windows::Forms::Button());
@@ -209,8 +213,9 @@ namespace SoundPlayer {
 			this->pauseToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->playNextToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->playPrevToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->closeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripSeparator2 = (gcnew System::Windows::Forms::ToolStripSeparator());
+			this->closeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->shuffleToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menuStrip1->SuspendLayout();
 			this->tableLayoutPanel1->SuspendLayout();
 			this->tableLayoutPanel2->SuspendLayout();
@@ -314,15 +319,18 @@ namespace SoundPlayer {
 			// 
 			// tableLayoutPanel2
 			// 
-			this->tableLayoutPanel2->ColumnCount = 4;
+			this->tableLayoutPanel2->ColumnCount = 5;
 			this->tableLayoutPanel2->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				25)));
+				20)));
 			this->tableLayoutPanel2->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				25)));
+				20)));
 			this->tableLayoutPanel2->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				25)));
+				20)));
 			this->tableLayoutPanel2->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				25)));
+				20)));
+			this->tableLayoutPanel2->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+				20)));
+			this->tableLayoutPanel2->Controls->Add(this->shuffleButton, 4, 0);
 			this->tableLayoutPanel2->Controls->Add(this->prevButton, 0, 0);
 			this->tableLayoutPanel2->Controls->Add(this->nextButton, 3, 0);
 			this->tableLayoutPanel2->Controls->Add(this->pauseButton, 2, 0);
@@ -335,18 +343,19 @@ namespace SoundPlayer {
 			this->tableLayoutPanel2->Size = System::Drawing::Size(427, 58);
 			this->tableLayoutPanel2->TabIndex = 0;
 			// 
-			// prevButton
+			// shuffleButton
 			// 
-			this->prevButton->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->prevButton->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->prevButton->ImageKey = L"prev.png";
-			this->prevButton->ImageList = this->iconsImageList;
-			this->prevButton->Location = System::Drawing::Point(3, 3);
-			this->prevButton->Name = L"prevButton";
-			this->prevButton->Size = System::Drawing::Size(100, 52);
-			this->prevButton->TabIndex = 2;
-			this->prevButton->UseVisualStyleBackColor = false;
-			this->prevButton->Click += gcnew System::EventHandler(this, &MainForm::prevButton_Click);
+			this->shuffleButton->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->shuffleButton->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->shuffleButton->ImageKey = L"shuffle.png";
+			this->shuffleButton->ImageList = this->iconsImageList;
+			this->shuffleButton->Location = System::Drawing::Point(343, 3);
+			this->shuffleButton->Name = L"shuffleButton";
+			this->shuffleButton->Size = System::Drawing::Size(81, 52);
+			this->shuffleButton->TabIndex = 4;
+			this->shuffleButton->Tag = L"";
+			this->shuffleButton->UseVisualStyleBackColor = false;
+			this->shuffleButton->Click += gcnew System::EventHandler(this, &MainForm::shuffleButton_Click);
 			// 
 			// iconsImageList
 			// 
@@ -358,6 +367,20 @@ namespace SoundPlayer {
 			this->iconsImageList->Images->SetKeyName(3, L"prev.png");
 			this->iconsImageList->Images->SetKeyName(4, L"trash.png");
 			this->iconsImageList->Images->SetKeyName(5, L"edit.png");
+			this->iconsImageList->Images->SetKeyName(6, L"shuffle.png");
+			// 
+			// prevButton
+			// 
+			this->prevButton->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->prevButton->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->prevButton->ImageKey = L"prev.png";
+			this->prevButton->ImageList = this->iconsImageList;
+			this->prevButton->Location = System::Drawing::Point(3, 3);
+			this->prevButton->Name = L"prevButton";
+			this->prevButton->Size = System::Drawing::Size(79, 52);
+			this->prevButton->TabIndex = 2;
+			this->prevButton->UseVisualStyleBackColor = false;
+			this->prevButton->Click += gcnew System::EventHandler(this, &MainForm::prevButton_Click);
 			// 
 			// nextButton
 			// 
@@ -365,9 +388,9 @@ namespace SoundPlayer {
 			this->nextButton->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->nextButton->ImageKey = L"next.png";
 			this->nextButton->ImageList = this->iconsImageList;
-			this->nextButton->Location = System::Drawing::Point(321, 3);
+			this->nextButton->Location = System::Drawing::Point(258, 3);
 			this->nextButton->Name = L"nextButton";
-			this->nextButton->Size = System::Drawing::Size(103, 52);
+			this->nextButton->Size = System::Drawing::Size(79, 52);
 			this->nextButton->TabIndex = 3;
 			this->nextButton->UseVisualStyleBackColor = false;
 			this->nextButton->Click += gcnew System::EventHandler(this, &MainForm::nextButton_Click);
@@ -378,9 +401,9 @@ namespace SoundPlayer {
 			this->pauseButton->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->pauseButton->ImageKey = L"pause.png";
 			this->pauseButton->ImageList = this->iconsImageList;
-			this->pauseButton->Location = System::Drawing::Point(215, 3);
+			this->pauseButton->Location = System::Drawing::Point(173, 3);
 			this->pauseButton->Name = L"pauseButton";
-			this->pauseButton->Size = System::Drawing::Size(100, 52);
+			this->pauseButton->Size = System::Drawing::Size(79, 52);
 			this->pauseButton->TabIndex = 1;
 			this->pauseButton->UseVisualStyleBackColor = false;
 			this->pauseButton->Click += gcnew System::EventHandler(this, &MainForm::pauseButton_Click);
@@ -391,9 +414,9 @@ namespace SoundPlayer {
 			this->playButton->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->playButton->ImageKey = L"play.png";
 			this->playButton->ImageList = this->iconsImageList;
-			this->playButton->Location = System::Drawing::Point(109, 3);
+			this->playButton->Location = System::Drawing::Point(88, 3);
 			this->playButton->Name = L"playButton";
-			this->playButton->Size = System::Drawing::Size(100, 52);
+			this->playButton->Size = System::Drawing::Size(79, 52);
 			this->playButton->TabIndex = 0;
 			this->playButton->UseVisualStyleBackColor = false;
 			this->playButton->Click += gcnew System::EventHandler(this, &MainForm::playButton_Click);
@@ -848,13 +871,13 @@ namespace SoundPlayer {
 			// contextMenuStrip
 			// 
 			this->contextMenuStrip->AutoClose = false;
-			this->contextMenuStrip->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(8) {
+			this->contextMenuStrip->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(9) {
 				this->toolStripMusicName,
 					this->toolStripSeparator1, this->playToolStripMenuItem, this->pauseToolStripMenuItem, this->playNextToolStripMenuItem, this->playPrevToolStripMenuItem,
-					this->toolStripSeparator2, this->closeToolStripMenuItem
+					this->shuffleToolStripMenuItem, this->toolStripSeparator2, this->closeToolStripMenuItem
 			});
 			this->contextMenuStrip->Name = L"contextMenuStrip";
-			this->contextMenuStrip->Size = System::Drawing::Size(311, 205);
+			this->contextMenuStrip->Size = System::Drawing::Size(311, 227);
 			// 
 			// toolStripMusicName
 			// 
@@ -906,6 +929,12 @@ namespace SoundPlayer {
 			this->playPrevToolStripMenuItem->Text = L"Предыдущая песня";
 			this->playPrevToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::prevButton_Click);
 			// 
+			// toolStripSeparator2
+			// 
+			this->toolStripSeparator2->Margin = System::Windows::Forms::Padding(0, 5, 0, 5);
+			this->toolStripSeparator2->Name = L"toolStripSeparator2";
+			this->toolStripSeparator2->Size = System::Drawing::Size(307, 6);
+			// 
 			// closeToolStripMenuItem
 			// 
 			this->closeToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"closeToolStripMenuItem.Image")));
@@ -915,11 +944,13 @@ namespace SoundPlayer {
 			this->closeToolStripMenuItem->Text = L"Закрыть меню";
 			this->closeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::closeToolStripMenuItem_Click);
 			// 
-			// toolStripSeparator2
+			// shuffleToolStripMenuItem
 			// 
-			this->toolStripSeparator2->Margin = System::Windows::Forms::Padding(0, 5, 0, 5);
-			this->toolStripSeparator2->Name = L"toolStripSeparator2";
-			this->toolStripSeparator2->Size = System::Drawing::Size(307, 6);
+			this->shuffleToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"shuffleToolStripMenuItem.Image")));
+			this->shuffleToolStripMenuItem->Name = L"shuffleToolStripMenuItem";
+			this->shuffleToolStripMenuItem->Size = System::Drawing::Size(310, 22);
+			this->shuffleToolStripMenuItem->Text = L"Случайный порядок";
+			this->shuffleToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::shuffleButton_Click);
 			// 
 			// MainForm
 			// 
@@ -1034,5 +1065,7 @@ namespace SoundPlayer {
 	private: System::Void aboutToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 
 	private: System::Void closeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+
+	private: System::Void shuffleButton_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

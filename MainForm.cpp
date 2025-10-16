@@ -84,7 +84,7 @@ void MainForm::scanMusicAndAddButtons() {
 		return;
 	}
 
-	this->playlist = new Playlist(this->musicWrapper, musicPathes);
+	this->playlist = new Playlist(this->musicWrapper, musicPathes, this->isShuffleSelected);
 
 	PlaylistNode* music = this->playlist->firstMusic;
 
@@ -124,7 +124,7 @@ void MainForm::scanPlaylistAndAddMusicButtons(PlaylistInfo^ playlistInfo) {
 		return;
 	}
 
-	this->playlist = new Playlist(this->musicWrapper, musicPathes);
+	this->playlist = new Playlist(this->musicWrapper, musicPathes, this->isShuffleSelected);
 
 	PlaylistNode* music = this->playlist->firstMusic;
 
@@ -519,4 +519,27 @@ System::Void MainForm::aboutToolStripMenuItem_Click(System::Object^ sender, Syst
 
 System::Void MainForm::closeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->contextMenuStrip->Close();
+}
+
+System::Void MainForm::shuffleButton_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (this->isShuffleSelected) {
+		this->shuffleButton->BackColor = Color::White;
+		this->shuffleToolStripMenuItem->BackColor = Color::White;
+
+		this->playlist->playInDefaultOrder();
+
+		this->isShuffleSelected = false;
+	}
+	else {
+		this->isShuffleSelected = true;
+
+		this->shuffleButton->BackColor = Color::LightGray;
+		this->shuffleToolStripMenuItem->BackColor = Color::LightGray;
+
+		bool res = this->playlist->playInRandomOrder();
+
+		if (res) {
+			this->setMusicInfo();
+		}
+	}
 }
