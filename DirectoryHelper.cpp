@@ -107,3 +107,24 @@ std::vector<fs::path> DirectoryHelper::getPlaylistMusicPathesArray(PlaylistInfo^
 
 	return musicPathes;
 }
+
+void DirectoryHelper::saveUserSetteings(UserSettings^ userSettings) {
+	String^ json = JsonConvert::SerializeObject(userSettings, Formatting::None);
+
+	File::WriteAllText(
+		StringHelper::toSystemString(DirectoryHelper::userSettingsFileName),
+		json
+	);
+}
+
+UserSettings^ DirectoryHelper::getUserSetteings() {
+	auto path = StringHelper::toSystemString(DirectoryHelper::userSettingsFileName);
+
+	if (File::Exists(path)) {
+		auto data = File::ReadAllText(path);
+
+		return JsonConvert::DeserializeObject<UserSettings^>(data);
+	}
+	
+	return gcnew UserSettings();
+}

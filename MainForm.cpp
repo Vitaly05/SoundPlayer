@@ -137,6 +137,35 @@ void MainForm::scanPlaylistAndAddMusicButtons(PlaylistInfo^ playlistInfo) {
 	} while (music != this->playlist->firstMusic);
 }
 
+void MainForm::loadUserSettings() {
+	UserSettings^ userSettings = DirectoryHelper::getUserSetteings();
+
+	this->volumeBar->Value = userSettings->volume;
+	this->pitchBar->Value = userSettings->pitch;
+}
+
+void MainForm::saveUserSettings() {
+	UserSettings^ userSettings = gcnew UserSettings(
+		this->volumeBar->Value,
+		this->pitchBar->Value
+	);
+
+	DirectoryHelper::saveUserSetteings(userSettings);
+}
+
+System::Void MainForm::MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
+	this->defaultMusicImage = this->musicPictureBox->Image;
+
+	this->scanMusicAndAddButtons();
+	this->scanPlaylistsAndAddButtons();
+
+	this->loadUserSettings();
+}
+
+System::Void MainForm::MainForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
+	this->saveUserSettings();
+}
+
 System::Void MainForm::playButton_Click(System::Object^ sender, System::EventArgs^ e) {
 	bool res = this->playlist->play();
 
@@ -231,13 +260,6 @@ System::Void MainForm::pitchUpDown_ValueChanged(System::Object^ sender, System::
 
 	this->pitchBar->Value = newPitch;
 	this->pitchUpDown->Value = newPitch;
-}
-
-System::Void MainForm::MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
-	this->defaultMusicImage = this->musicPictureBox->Image;
-
-	this->scanMusicAndAddButtons();
-	this->scanPlaylistsAndAddButtons();
 }
 
 TableLayoutPanel^ MainForm::createMusicButton(std::string text, std::string path, PlaylistNode* node) {

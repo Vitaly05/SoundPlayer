@@ -4,6 +4,7 @@
 #include "Playlist.h"
 #include "TimeHelper.h"
 #include "StringHelper.h"
+#include "UserSettings.h"
 
 #include "CreatePlaylistForm.h"
 
@@ -56,9 +57,6 @@ namespace SoundPlayer {
 	private: System::Windows::Forms::Timer^ musicTimer;
 
 
-	private:
-		MusicWrapper* musicWrapper = new MusicWrapper();
-		Playlist* playlist;
 	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel4;
 	private: System::Windows::Forms::TrackBar^ volumeBar;
 
@@ -83,10 +81,13 @@ namespace SoundPlayer {
 	private: System::Windows::Forms::Label^ musicName;
 	private: System::Windows::Forms::Label^ musicArtist;
 
+	private:
+		MusicWrapper* musicWrapper = new MusicWrapper();
+		Playlist* playlist;
+		bool isShuffleSelected = false;
+		int playlistsCount = 0;
+		bool isProgrammaticTrackChange = false;
 
-	private: bool isShuffleSelected = false;
-	private: int playlistsCount = 0;
-	private: bool isProgrammaticTrackChange = false;
 	private: System::Windows::Forms::OpenFileDialog^ addMusicFileDialog;
 
 	private: System::Windows::Forms::ToolStripMenuItem^ fileToolStripMenuItem;
@@ -118,21 +119,6 @@ namespace SoundPlayer {
 	private: System::Windows::Forms::ToolStripSeparator^ toolStripSeparator2;
 	private: System::Windows::Forms::Button^ shuffleButton;
 	private: System::Windows::Forms::ToolStripMenuItem^ shuffleToolStripMenuItem;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -213,9 +199,9 @@ namespace SoundPlayer {
 			this->pauseToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->playNextToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->playPrevToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->shuffleToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripSeparator2 = (gcnew System::Windows::Forms::ToolStripSeparator());
 			this->closeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->shuffleToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menuStrip1->SuspendLayout();
 			this->tableLayoutPanel1->SuspendLayout();
 			this->tableLayoutPanel2->SuspendLayout();
@@ -877,7 +863,7 @@ namespace SoundPlayer {
 					this->shuffleToolStripMenuItem, this->toolStripSeparator2, this->closeToolStripMenuItem
 			});
 			this->contextMenuStrip->Name = L"contextMenuStrip";
-			this->contextMenuStrip->Size = System::Drawing::Size(311, 227);
+			this->contextMenuStrip->Size = System::Drawing::Size(311, 205);
 			// 
 			// toolStripMusicName
 			// 
@@ -929,6 +915,14 @@ namespace SoundPlayer {
 			this->playPrevToolStripMenuItem->Text = L"Предыдущая песня";
 			this->playPrevToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::prevButton_Click);
 			// 
+			// shuffleToolStripMenuItem
+			// 
+			this->shuffleToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"shuffleToolStripMenuItem.Image")));
+			this->shuffleToolStripMenuItem->Name = L"shuffleToolStripMenuItem";
+			this->shuffleToolStripMenuItem->Size = System::Drawing::Size(310, 22);
+			this->shuffleToolStripMenuItem->Text = L"Случайный порядок";
+			this->shuffleToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::shuffleButton_Click);
+			// 
 			// toolStripSeparator2
 			// 
 			this->toolStripSeparator2->Margin = System::Windows::Forms::Padding(0, 5, 0, 5);
@@ -944,14 +938,6 @@ namespace SoundPlayer {
 			this->closeToolStripMenuItem->Text = L"Закрыть меню";
 			this->closeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::closeToolStripMenuItem_Click);
 			// 
-			// shuffleToolStripMenuItem
-			// 
-			this->shuffleToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"shuffleToolStripMenuItem.Image")));
-			this->shuffleToolStripMenuItem->Name = L"shuffleToolStripMenuItem";
-			this->shuffleToolStripMenuItem->Size = System::Drawing::Size(310, 22);
-			this->shuffleToolStripMenuItem->Text = L"Случайный порядок";
-			this->shuffleToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::shuffleButton_Click);
-			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -963,6 +949,7 @@ namespace SoundPlayer {
 			this->MainMenuStrip = this->menuStrip1;
 			this->Name = L"MainForm";
 			this->Text = L"SoundPlayer";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &MainForm::MainForm_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
 			this->menuStrip1->ResumeLayout(false);
 			this->menuStrip1->PerformLayout();
@@ -1014,6 +1001,14 @@ namespace SoundPlayer {
 
 	private: void scanPlaylistAndAddMusicButtons(PlaylistInfo^ playlistInfo);
 
+	private: void loadUserSettings();
+
+	private: void saveUserSettings();
+
+	private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e);
+
+	private: System::Void MainForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e);
+
 	private: System::Windows::Forms::TableLayoutPanel^ createMusicButton(std::string text, std::string path, PlaylistNode* node);
 
 	private: System::Windows::Forms::TableLayoutPanel^ createPlaylistButton(PlaylistInfo^ playlistInfo);
@@ -1045,8 +1040,6 @@ namespace SoundPlayer {
 	private: System::Void pitchBar_ValueChanged(System::Object^ sender, System::EventArgs^ e);
 
 	private: System::Void pitchUpDown_ValueChanged(System::Object^ sender, System::EventArgs^ e);
-
-	private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e);
 
 	private: System::Void musicButton_Click(System::Object^ sender, System::EventArgs^ e);
 
