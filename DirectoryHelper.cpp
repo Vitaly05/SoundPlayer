@@ -4,6 +4,8 @@ std::vector<fs::path> DirectoryHelper::getMusicPathesArray() {
 	std::vector<fs::path> musicPathes;
 
 	try {
+		Directory::CreateDirectory(StringHelper::toSystemString(DirectoryHelper::musicFolderPath));
+
 		for (const auto& entry : fs::directory_iterator(DirectoryHelper::musicFolderPath)) {
 			std::string ext = entry.path().extension().string();
 
@@ -63,6 +65,8 @@ List<PlaylistInfo^>^ DirectoryHelper::getAllPlaylists() {
 	List<PlaylistInfo^>^ playlists = gcnew List<PlaylistInfo^>();
 
 	try {
+		Directory::CreateDirectory(StringHelper::toSystemString(DirectoryHelper::playlistsFolderPath));
+
 		for (const auto& entry : fs::directory_iterator(DirectoryHelper::playlistsFolderPath)) {
 			std::string ext = entry.path().extension().string();
 
