@@ -9,10 +9,10 @@ using namespace SoundPlayer;
 [STAThreadAttribute]
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// Console for debug
-	AllocConsole();
+	/*AllocConsole();
 	FILE* fp;
 	freopen_s(&fp, "CONOUT$", "w", stdout);
-	freopen_s(&fp, "CONOUT$", "w", stderr);
+	freopen_s(&fp, "CONOUT$", "w", stderr);*/
 
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
