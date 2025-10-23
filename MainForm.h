@@ -104,7 +104,7 @@ namespace SoundPlayer {
 	private: System::Windows::Forms::Button^ editPlaylistButton;
 	private: System::Windows::Forms::Button^ deletePlaylistButton;
 	private: System::Windows::Forms::TabPage^ selectedPlaylistPage;
-	private: System::Windows::Forms::Label^ label1;
+
 	private: System::Windows::Forms::Label^ selectedPlaylistEmptyLabel;
 	private: System::Windows::Forms::ToolStripMenuItem^ aboutToolStripMenuItem;
 	private: System::Windows::Forms::NotifyIcon^ notifyIcon;
@@ -175,7 +175,6 @@ namespace SoundPlayer {
 			this->musicButtonTemplate = (gcnew System::Windows::Forms::Button());
 			this->allPageEmptyLabel = (gcnew System::Windows::Forms::Label());
 			this->playlistsPage = (gcnew System::Windows::Forms::TabPage());
-			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->playlistGroup = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->deletePlaylistButton = (gcnew System::Windows::Forms::Button());
 			this->playlistButton = (gcnew System::Windows::Forms::Button());
@@ -648,7 +647,6 @@ namespace SoundPlayer {
 			// playlistsPage
 			// 
 			this->playlistsPage->AutoScroll = true;
-			this->playlistsPage->Controls->Add(this->label1);
 			this->playlistsPage->Controls->Add(this->playlistGroup);
 			this->playlistsPage->Controls->Add(this->playlistsPageEmptyLabel);
 			this->playlistsPage->Location = System::Drawing::Point(4, 22);
@@ -658,15 +656,6 @@ namespace SoundPlayer {
 			this->playlistsPage->TabIndex = 1;
 			this->playlistsPage->Text = L"Плейлисты";
 			this->playlistsPage->UseVisualStyleBackColor = true;
-			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(93, 50);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(35, 13);
-			this->label1->TabIndex = 4;
-			this->label1->Text = L"label1";
 			// 
 			// playlistGroup
 			// 
@@ -970,7 +959,6 @@ namespace SoundPlayer {
 			this->allMusicPage->ResumeLayout(false);
 			this->musicButtonTableLayoutPanel->ResumeLayout(false);
 			this->playlistsPage->ResumeLayout(false);
-			this->playlistsPage->PerformLayout();
 			this->playlistGroup->ResumeLayout(false);
 			this->selectedPlaylistPage->ResumeLayout(false);
 			this->tableLayoutPanel6->ResumeLayout(false);
